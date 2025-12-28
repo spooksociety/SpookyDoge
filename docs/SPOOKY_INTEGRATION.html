@@ -254,6 +254,70 @@
     .syntax-string { color: #c3e88d; }
     .syntax-comment { color: #676e95; }
     .syntax-number { color: #f78c6c; }
+    
+    .code-block {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 4px 8px;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .copy-btn:hover {
+      background: var(--purple);
+      color: var(--text-primary);
+      border-color: var(--purple);
+    }
+    
+    .copy-btn.copied {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+    
+    .copy-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .nav-links {
+      text-align: center;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .nav-links a {
+      color: var(--purple);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: color 0.2s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+    
+    .nav-divider {
+      color: var(--border-color);
+      margin: 0 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -263,6 +327,12 @@
   
   <h1 class="main-title">dApp Integration Guide</h1>
   <p class="subtitle">Integrate your dApp with Spooky Doge wallet for Dogecoin payments and Doginal transfers</p>
+  
+  <div class="nav-links">
+    <a href="USER_GUIDE.html">User Guide</a>
+    <span class="nav-divider">|</span>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
   
   <hr>
   
@@ -635,5 +705,39 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
     <p><strong>Built with care for the Spooky Society</strong></p>
     <p><em>Much wow. Very secure. So spooky.</em></p>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const copyIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>';
+      const checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+      
+      document.querySelectorAll('pre').forEach(function(pre) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block';
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.innerHTML = copyIcon + 'Copy';
+        wrapper.appendChild(btn);
+        
+        btn.addEventListener('click', function() {
+          const code = pre.querySelector('code');
+          const text = code ? code.textContent : pre.textContent;
+          
+          navigator.clipboard.writeText(text).then(function() {
+            btn.innerHTML = checkIcon + 'Copied!';
+            btn.classList.add('copied');
+            
+            setTimeout(function() {
+              btn.innerHTML = copyIcon + 'Copy';
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>
