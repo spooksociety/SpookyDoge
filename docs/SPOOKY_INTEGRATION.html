@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spooky Doge Wallet - dApp Integration Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #9333ea;
+      --purple-dark: #7c3aed;
+      --bg-dark: #1a1a2e;
+      --bg-card: #252542;
+      --bg-code: #1e1e3f;
+      --text-primary: #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --border-color: #3f3f5a;
+      --green: #22c55e;
+      --yellow: #eab308;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .logo-container {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .logo-container img {
+      width: 120px;
+      height: auto;
+    }
+    
+    h1.main-title {
+      font-family: 'Creepster', cursive;
+      font-size: 3rem;
+      text-align: center;
+      color: var(--purple);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+    }
+    
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+    
+    h2 {
+      font-family: 'Nosifer', cursive;
+      font-size: 1.4rem;
+      color: var(--purple);
+      margin: 2.5rem 0 1rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      letter-spacing: 1px;
+    }
+    
+    h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin: 1.5rem 0 0.75rem 0;
+      font-weight: 600;
+    }
+    
+    h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      color: var(--purple);
+      margin: 1.5rem 0 0.5rem 0;
+      font-weight: 600;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    hr {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 2rem 0;
+    }
+    
+    ul, ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+    }
+    
+    strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    em {
+      color: var(--purple);
+    }
+    
+    a {
+      color: var(--purple);
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      background: var(--bg-card);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 0.95rem;
+    }
+    
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    th {
+      background: rgba(147, 51, 234, 0.2);
+      font-weight: 600;
+      color: var(--purple);
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg-card);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    
+    .tip {
+      background: rgba(147, 51, 234, 0.1);
+      border-left: 4px solid var(--purple);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .warning {
+      background: rgba(234, 179, 8, 0.1);
+      border-left: 4px solid var(--yellow);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+    
+    .method-signature {
+      background: var(--bg-card);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+      border-left: 3px solid var(--purple);
+    }
+    
+    .returns {
+      color: var(--green);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .footer p {
+      margin-bottom: 0.25rem;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-right: 0.5rem;
+    }
+    
+    .badge-purple {
+      background: rgba(147, 51, 234, 0.2);
+      color: var(--purple);
+    }
+    
+    .badge-green {
+      background: rgba(34, 197, 94, 0.2);
+      color: var(--green);
+    }
+    
+    .syntax-keyword { color: #c792ea; }
+    .syntax-function { color: #82aaff; }
+    .syntax-string { color: #c3e88d; }
+    .syntax-comment { color: #676e95; }
+    .syntax-number { color: #f78c6c; }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <img src="ghost-doge-logo.png" alt="Spooky Doge Logo">
+  </div>
+  
+  <h1 class="main-title">dApp Integration Guide</h1>
+  <p class="subtitle">Integrate your dApp with Spooky Doge wallet for Dogecoin payments and Doginal transfers</p>
+  
+  <hr>
+  
+  <h2>Platform Support</h2>
+  <p>Spooky Doge wallet is available on:</p>
+  <ul>
+    <li><strong>Browser Extension</strong> - Chrome/Edge extension</li>
+    <li><strong>Mobile App</strong> - iOS/Android with in-app dApp browser</li>
+  </ul>
+  <div class="tip">
+    <strong>Both platforms inject the same <code>window.dogecoin</code> provider</strong>, so you can support all users with a single codebase.
+  </div>
+  
+  <hr>
+  
+  <h2>Quick Start</h2>
+  
+  <h3>1. Detect the Wallet</h3>
+  <pre><code><span class="syntax-comment">// Check if Spooky Doge wallet is available</span>
+<span class="syntax-keyword">function</span> <span class="syntax-function">isSpookyWalletAvailable</span>() {
+  <span class="syntax-keyword">return</span> <span class="syntax-keyword">typeof</span> window.dogecoin !== <span class="syntax-string">'undefined'</span> && window.dogecoin.isSpookyWallet;
+}
+
+<span class="syntax-comment">// Wait for wallet to be ready (it injects after page load)</span>
+window.<span class="syntax-function">addEventListener</span>(<span class="syntax-string">'dogecoin#initialized'</span>, () => {
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Spooky Doge wallet detected!'</span>);
+});</code></pre>
+  
+  <h3>2. Connect to the Wallet</h3>
+  <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">connectWallet</span>() {
+  <span class="syntax-keyword">if</span> (!<span class="syntax-function">isSpookyWalletAvailable</span>()) {
+    <span class="syntax-function">alert</span>(<span class="syntax-string">'Please install Spooky Doge wallet or open in the Spooky Doge app browser'</span>);
+    <span class="syntax-keyword">return null</span>;
+  }
+
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-comment">// Opens approval popup for user</span>
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">connect</span>();
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Connected! Address:'</span>, result.address);
+    <span class="syntax-keyword">return</span> result.address;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Connection rejected:'</span>, error.message);
+    <span class="syntax-keyword">return null</span>;
+  }
+}</code></pre>
+  
+  <h3>3. Get Account Information</h3>
+  <pre><code><span class="syntax-comment">// Get connected address</span>
+<span class="syntax-keyword">const</span> address = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getAddress</span>();
+
+<span class="syntax-comment">// Get wallet balance in koinu (1 DOGE = 100,000,000 koinu)</span>
+<span class="syntax-keyword">const</span> balance = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getBalance</span>();
+<span class="syntax-keyword">const</span> dogeBalance = balance / <span class="syntax-number">100000000</span>;
+
+<span class="syntax-comment">// Check if currently connected</span>
+<span class="syntax-keyword">const</span> connected = window.dogecoin.<span class="syntax-function">isConnected</span>();
+
+<span class="syntax-comment">// Get all connected accounts</span>
+<span class="syntax-keyword">const</span> accounts = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getAccounts</span>();</code></pre>
+  
+  <h3>4. Send DOGE</h3>
+  <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">sendPayment</span>(recipientAddress, amountInDoge) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-comment">// Opens transaction approval popup</span>
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendTransaction</span>({
+      to: recipientAddress,
+      amount: amountInDoge  <span class="syntax-comment">// Amount in DOGE (not koinu)</span>
+    });
+    
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Transaction sent! TXID:'</span>, result.txid);
+    <span class="syntax-keyword">return</span> result.txid;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Transaction failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}</code></pre>
+  
+  <h3>5. Work with Doginals (Inscriptions)</h3>
+  <pre><code><span class="syntax-comment">// Get all doginals in the wallet</span>
+<span class="syntax-keyword">const</span> doginals = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getDoginals</span>();
+doginals.<span class="syntax-function">forEach</span>(d => {
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Inscription:'</span>, d.inscriptionId);
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Image URL:'</span>, d.imageUrl);
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Content Type:'</span>, d.contentType);
+});
+
+<span class="syntax-comment">// Transfer a doginal</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">transferDoginal</span>(inscriptionId, recipientAddress) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendDoginal</span>({
+      inscriptionId: inscriptionId,
+      to: recipientAddress
+    });
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Doginal transferred! TXID:'</span>, result.txid);
+    <span class="syntax-keyword">return</span> result.txid;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Transfer failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}</code></pre>
+  
+  <h3>6. Sign Messages</h3>
+  <pre><code><span class="syntax-comment">// Request a message signature (no cost, requires user approval)</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">signMessage</span>(message) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">signMessage</span>(message);
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Signature:'</span>, result.signature);
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Signed by:'</span>, result.address);
+    <span class="syntax-keyword">return</span> result;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Signing failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}</code></pre>
+  
+  <h3>7. Listen for Events</h3>
+  <pre><code><span class="syntax-comment">// Account changes (user switches address)</span>
+window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'accountsChanged'</span>, (accounts) => {
+  <span class="syntax-keyword">if</span> (accounts.length === <span class="syntax-number">0</span>) {
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Wallet disconnected'</span>);
+  } <span class="syntax-keyword">else</span> {
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Active account:'</span>, accounts[<span class="syntax-number">0</span>]);
+  }
+});
+
+<span class="syntax-comment">// Connection events</span>
+window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'connect'</span>, ({ address }) => {
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Connected:'</span>, address);
+});
+
+window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'disconnect'</span>, () => {
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Wallet disconnected'</span>);
+});</code></pre>
+  
+  <hr>
+  
+  <h2>API Reference</h2>
+  
+  <h3>Provider Object</h3>
+  <p>Available at <code>window.dogecoin</code> or <code>window.spookyWallet</code></p>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>isSpookyWallet</code></td>
+        <td><code>boolean</code></td>
+        <td>Always <code>true</code> - identifies the wallet</td>
+      </tr>
+      <tr>
+        <td><code>isConnected()</code></td>
+        <td><code>function</code></td>
+        <td>Returns <code>true</code> if site is connected</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <h3>Methods</h3>
+  
+  <h4><code>connect()</code></h4>
+  <p>Request wallet connection. Opens approval popup.</p>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ address: string }&gt;</code></p>
+  
+  <h4><code>disconnect()</code></h4>
+  <p>Disconnect the dApp from the wallet.</p>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;void&gt;</code></p>
+  
+  <h4><code>getAddress()</code></h4>
+  <p>Get the currently connected address.</p>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;string | null&gt;</code> - Null if not connected</p>
+  
+  <h4><code>getAccounts()</code></h4>
+  <p>Get all connected accounts.</p>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;string[]&gt;</code></p>
+  
+  <h4><code>getBalance()</code></h4>
+  <p>Get wallet balance in koinu.</p>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;number&gt;</code> - Balance in koinu (divide by 100,000,000 for DOGE)</p>
+  
+  <h4><code>getDoginals()</code></h4>
+  <p>Get all doginals (inscriptions) in the wallet.</p>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;Doginal[]&gt;</code></p>
+  <pre><code><span class="syntax-keyword">interface</span> Doginal {
+  inscriptionId: <span class="syntax-keyword">string</span>;  <span class="syntax-comment">// Unique inscription identifier</span>
+  output: <span class="syntax-keyword">string</span>;         <span class="syntax-comment">// UTXO reference (txid:vout)</span>
+  contentType: <span class="syntax-keyword">string</span>;    <span class="syntax-comment">// MIME type (e.g., 'image/png', 'text/html')</span>
+  imageUrl: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// CDN URL for the content</span>
+  value?: <span class="syntax-keyword">number</span>;        <span class="syntax-comment">// UTXO value in DOGE (optional)</span>
+}</code></pre>
+  
+  <h4><code>sendTransaction(params)</code></h4>
+  <p>Request a DOGE transaction. Opens approval popup.</p>
+  <p><strong>Parameters:</strong></p>
+  <pre><code>{
+  to: <span class="syntax-keyword">string</span>;      <span class="syntax-comment">// Recipient Dogecoin address</span>
+  amount: <span class="syntax-keyword">number</span>;  <span class="syntax-comment">// Amount in DOGE (not koinu)</span>
+}</code></pre>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ txid: string }&gt;</code></p>
+  
+  <h4><code>sendDoginal(params)</code></h4>
+  <p>Request a doginal transfer. Opens approval popup.</p>
+  <p><strong>Parameters:</strong></p>
+  <pre><code>{
+  inscriptionId: <span class="syntax-keyword">string</span>;  <span class="syntax-comment">// The inscription ID to transfer</span>
+  to: <span class="syntax-keyword">string</span>;             <span class="syntax-comment">// Recipient Dogecoin address</span>
+}</code></pre>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ txid: string }&gt;</code></p>
+  
+  <h4><code>signMessage(message)</code></h4>
+  <p>Request a message signature. Opens approval popup. <span class="badge badge-green">Free - no DOGE cost</span></p>
+  <p><strong>Parameters:</strong> <code>message</code> (string) - The message to sign</p>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ signature: string, address: string }&gt;</code></p>
+  <p>The signature is in Bitcoin/Dogecoin signed message format (base64-encoded, 65 bytes), compatible with <code>verifymessage</code> in Dogecoin Core.</p>
+  
+  <h4><code>request(args)</code></h4>
+  <p>EIP-1193 style request method for compatibility.</p>
+  <pre><code><span class="syntax-comment">// Examples</span>
+<span class="syntax-keyword">const</span> accounts = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({ method: <span class="syntax-string">'doge_requestAccounts'</span> });
+<span class="syntax-keyword">const</span> balance = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({ method: <span class="syntax-string">'doge_getBalance'</span> });
+<span class="syntax-keyword">const</span> doginals = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({ method: <span class="syntax-string">'doge_getDoginals'</span> });
+<span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+  method: <span class="syntax-string">'doge_sendTransaction'</span>,
+  params: { to: <span class="syntax-string">'DAddress...'</span>, amount: <span class="syntax-number">10</span> }
+});</code></pre>
+  
+  <p><strong>Supported Methods:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>doge_requestAccounts</code></td><td>Request wallet connection</td></tr>
+      <tr><td><code>doge_accounts</code></td><td>Get connected accounts</td></tr>
+      <tr><td><code>doge_getBalance</code></td><td>Get wallet balance</td></tr>
+      <tr><td><code>doge_getDoginals</code></td><td>Get doginals in wallet</td></tr>
+      <tr><td><code>doge_sendTransaction</code></td><td>Send DOGE</td></tr>
+      <tr><td><code>doge_sendDoginal</code></td><td>Transfer a doginal</td></tr>
+      <tr><td><code>doge_signMessage</code></td><td>Sign a message (free, no DOGE cost)</td></tr>
+      <tr><td><code>doge_chainId</code></td><td>Get chain identifier (<code>"dogecoin:mainnet"</code>)</td></tr>
+    </tbody>
+  </table>
+  
+  <h4><code>on(event, callback)</code></h4>
+  <p>Subscribe to wallet events.</p>
+  <p><strong>Events:</strong></p>
+  <ul>
+    <li><code>connect</code> - Fired when connected, receives <code>{ address: string }</code></li>
+    <li><code>disconnect</code> - Fired when disconnected</li>
+    <li><code>accountsChanged</code> - Fired when active address changes, receives <code>string[]</code></li>
+  </ul>
+  
+  <h4><code>removeListener(event, callback)</code></h4>
+  <p>Unsubscribe from wallet events.</p>
+  
+  <hr>
+  
+  <h2>Fee Structure</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Transaction Type</th>
+        <th>Network Fee</th>
+        <th>Dev Fee</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Regular DOGE send</td>
+        <td>Dynamic (based on tx size)</td>
+        <td>0.01 DOGE</td>
+        <td>Variable</td>
+      </tr>
+      <tr>
+        <td>Doginal transfer</td>
+        <td>0.10 DOGE</td>
+        <td>0.01 DOGE</td>
+        <td>0.11 DOGE</td>
+      </tr>
+      <tr>
+        <td>Multi-doginal transfer</td>
+        <td>0.10 DOGE x count</td>
+        <td>0.01 DOGE</td>
+        <td>Variable</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <hr>
+  
+  <h2>Error Handling</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Error Message</th>
+        <th>Cause</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>"Connection rejected by user"</code></td><td>User declined connection request</td></tr>
+      <tr><td><code>"Site not connected"</code></td><td>dApp not connected to wallet</td></tr>
+      <tr><td><code>"Wallet not unlocked"</code></td><td>User hasn't unlocked the wallet</td></tr>
+      <tr><td><code>"Transaction rejected by user"</code></td><td>User declined transaction</td></tr>
+      <tr><td><code>"Doginal transfer rejected by user"</code></td><td>User declined doginal transfer</td></tr>
+      <tr><td><code>"Message signing rejected by user"</code></td><td>User declined signature request</td></tr>
+      <tr><td><code>"Insufficient funds"</code></td><td>Not enough DOGE for transaction + fees</td></tr>
+      <tr><td><code>"Inscription not found in wallet"</code></td><td>Requested inscription not in wallet</td></tr>
+    </tbody>
+  </table>
+  
+  <hr>
+  
+  <h2>Security Notes</h2>
+  <ol>
+    <li><strong>User Approval Required</strong> - All transactions require explicit user approval via popup</li>
+    <li><strong>Per-Site Permissions</strong> - Each website must be approved separately; users can manage connections in Settings</li>
+    <li><strong>Non-Custodial</strong> - Private keys never leave the wallet</li>
+    <li><strong>Inscription Protection</strong> - UTXOs under 0.1 DOGE are protected from regular spending</li>
+    <li><strong>Dev Fee Transparency</strong> - 0.01 DOGE dev fee included in all transactions</li>
+  </ol>
+  
+  <hr>
+  
+  <h2>Platform Notes</h2>
+  
+  <h3>Browser Extension</h3>
+  <ul>
+    <li>Install from Chrome Web Store or load unpacked from <code>dist-extension</code> folder</li>
+    <li>Provider is injected automatically on all websites</li>
+  </ul>
+  
+  <h3>Mobile App</h3>
+  <ul>
+    <li>Users must open your website through the in-app dApp browser (Browser tab)</li>
+    <li>Provider is injected into the WebView automatically</li>
+    <li>Ensure your site is mobile-responsive</li>
+  </ul>
+  
+  <h3>Suggesting Users Open in Spooky Doge</h3>
+  <pre><code><span class="syntax-keyword">if</span> (!<span class="syntax-function">isSpookyWalletAvailable</span>()) {
+  <span class="syntax-comment">// Show a banner or modal</span>
+  <span class="syntax-function">showModal</span>({
+    title: <span class="syntax-string">'Use Spooky Doge Wallet'</span>,
+    message: <span class="syntax-string">'For the best experience, open this site in the Spooky Doge app browser.'</span>,
+    buttons: [
+      { text: <span class="syntax-string">'Get the App'</span>, url: <span class="syntax-string">'https://spooksociety.xyz/wallet'</span> },
+      { text: <span class="syntax-string">'Continue Anyway'</span>, action: <span class="syntax-string">'dismiss'</span> }
+    ]
+  });
+}</code></pre>
+  
+  <hr>
+  
+  <h2>Support</h2>
+  <p>For integration support or questions:</p>
+  <ul>
+    <li><strong>Website:</strong> <a href="https://spooksociety.xyz">https://spooksociety.xyz</a></li>
+  </ul>
+  
+  <div class="footer">
+    <p><strong>Built with care for the Spooky Society</strong></p>
+    <p><em>Much wow. Very secure. So spooky.</em></p>
+  </div>
+</body>
+</html>
