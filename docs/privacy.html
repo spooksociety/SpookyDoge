@@ -23,10 +23,31 @@
     li { margin-bottom: 0.5rem; }
     strong { color: #e5e5e5; }
     a { color: #a855f7; }
+    .nav-links {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: #1a1a1a;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    .nav-links a {
+      color: #a855f7;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+    }
+    .nav-links a:hover { color: #e5e5e5; }
+    .nav-divider { color: #444; margin: 0 0.5rem; }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="nav-links">
+      <a href="USER_GUIDE.html">User Guide</a>
+      <span class="nav-divider">|</span>
+      <a href="SPOOKY_INTEGRATION.html">dApp Integration Guide</a>
+    </div>
+    
     <h1>Privacy Policy</h1>
     <p class="updated">Last updated: December 26, 2024</p>
 
@@ -88,3 +109,4 @@
   </div>
 </body>
 </html>
+
