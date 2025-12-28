@@ -3,22 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spooky Doge Wallet - dApp Integration Guide</title>
+  <title>Spooky Doge Wallet - User Guide</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --purple: #9333ea;
       --purple-dark: #7c3aed;
       --bg-dark: #1a1a2e;
       --bg-card: #252542;
-      --bg-code: #1e1e3f;
       --text-primary: #f4f4f5;
       --text-secondary: #a1a1aa;
       --border-color: #3f3f5a;
-      --green: #22c55e;
-      --yellow: #eab308;
     }
     
     * {
@@ -43,13 +40,13 @@
     }
     
     .logo-container img {
-      width: 120px;
+      width: 150px;
       height: auto;
     }
     
     h1.main-title {
       font-family: 'Creepster', cursive;
-      font-size: 3rem;
+      font-size: 3.5rem;
       text-align: center;
       color: var(--purple);
       text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -57,16 +54,23 @@
       letter-spacing: 2px;
     }
     
-    .subtitle {
+    .tagline {
       text-align: center;
       font-size: 1.1rem;
       color: var(--text-secondary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .tagline-alt {
+      text-align: center;
+      font-style: italic;
+      color: var(--purple);
       margin-bottom: 2rem;
     }
     
     h2 {
       font-family: 'Nosifer', cursive;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: var(--purple);
       margin: 2.5rem 0 1rem 0;
       padding-bottom: 0.5rem;
@@ -85,11 +89,9 @@
     h4 {
       font-family: 'Inter', sans-serif;
       font-size: 1.1rem;
-      color: var(--purple);
-      margin: 1.5rem 0 0.5rem 0;
-      font-weight: 600;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      margin: 1rem 0 0.5rem 0;
+      font-weight: 500;
     }
     
     p {
@@ -136,7 +138,6 @@
       background: var(--bg-card);
       border-radius: 8px;
       overflow: hidden;
-      font-size: 0.95rem;
     }
     
     th, td {
@@ -155,30 +156,6 @@
       border-bottom: none;
     }
     
-    code {
-      font-family: 'JetBrains Mono', monospace;
-      background: var(--bg-card);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.9em;
-    }
-    
-    pre {
-      background: var(--bg-code);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-    
-    pre code {
-      background: none;
-      padding: 0;
-      font-size: 0.85rem;
-      line-height: 1.5;
-    }
-    
     .tip {
       background: rgba(147, 51, 234, 0.1);
       border-left: 4px solid var(--purple);
@@ -189,7 +166,7 @@
     
     .warning {
       background: rgba(234, 179, 8, 0.1);
-      border-left: 4px solid var(--yellow);
+      border-left: 4px solid #eab308;
       padding: 1rem;
       margin: 1rem 0;
       border-radius: 0 8px 8px 0;
@@ -203,22 +180,6 @@
       margin: 1rem 0;
     }
     
-    .method-signature {
-      background: var(--bg-card);
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      margin: 0.5rem 0;
-      border-left: 3px solid var(--purple);
-    }
-    
-    .returns {
-      color: var(--green);
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-    }
-    
     .footer {
       text-align: center;
       margin-top: 3rem;
@@ -230,30 +191,37 @@
       margin-bottom: 0.25rem;
     }
     
-    .badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
+    code {
+      background: var(--bg-card);
+      padding: 0.2rem 0.4rem;
       border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      margin-right: 0.5rem;
+      font-size: 0.9em;
     }
     
-    .badge-purple {
-      background: rgba(147, 51, 234, 0.2);
+    .nav-links {
+      text-align: center;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .nav-links a {
       color: var(--purple);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: color 0.2s;
     }
     
-    .badge-green {
-      background: rgba(34, 197, 94, 0.2);
-      color: var(--green);
+    .nav-links a:hover {
+      color: var(--text-primary);
     }
     
-    .syntax-keyword { color: #c792ea; }
-    .syntax-function { color: #82aaff; }
-    .syntax-string { color: #c3e88d; }
-    .syntax-comment { color: #676e95; }
-    .syntax-number { color: #f78c6c; }
+    .nav-divider {
+      color: var(--border-color);
+      margin: 0 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -261,374 +229,563 @@
     <img src="ghost-doge-logo.png" alt="Spooky Doge Logo">
   </div>
   
-  <h1 class="main-title">dApp Integration Guide</h1>
-  <p class="subtitle">Integrate your dApp with Spooky Doge wallet for Dogecoin payments and Doginal transfers</p>
+  <h1 class="main-title">Spooky Doge Wallet</h1>
   
-  <hr>
+  <p class="tagline"><strong>A non-custodial Dogecoin wallet for the Spooky Society</strong></p>
+  <p class="tagline-alt">Your keys. Your coins. Your Doginals.</p>
   
-  <h2>Platform Support</h2>
-  <p>Spooky Doge wallet is available on:</p>
-  <ul>
-    <li><strong>Browser Extension</strong> - Chrome/Edge extension</li>
-    <li><strong>Mobile App</strong> - iOS/Android with in-app dApp browser</li>
-  </ul>
-  <div class="tip">
-    <strong>Both platforms inject the same <code>window.dogecoin</code> provider</strong>, so you can support all users with a single codebase.
+  <div class="nav-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <span class="nav-divider">|</span>
+    <a href="SPOOKY_INTEGRATION.html">dApp Integration Guide</a>
   </div>
   
   <hr>
   
-  <h2>Quick Start</h2>
-  
-  <h3>1. Detect the Wallet</h3>
-  <pre><code><span class="syntax-comment">// Check if Spooky Doge wallet is available</span>
-<span class="syntax-keyword">function</span> <span class="syntax-function">isSpookyWalletAvailable</span>() {
-  <span class="syntax-keyword">return</span> <span class="syntax-keyword">typeof</span> window.dogecoin !== <span class="syntax-string">'undefined'</span> && window.dogecoin.isSpookyWallet;
-}
-
-<span class="syntax-comment">// Wait for wallet to be ready (it injects after page load)</span>
-window.<span class="syntax-function">addEventListener</span>(<span class="syntax-string">'dogecoin#initialized'</span>, () => {
-  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Spooky Doge wallet detected!'</span>);
-});</code></pre>
-  
-  <h3>2. Connect to the Wallet</h3>
-  <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">connectWallet</span>() {
-  <span class="syntax-keyword">if</span> (!<span class="syntax-function">isSpookyWalletAvailable</span>()) {
-    <span class="syntax-function">alert</span>(<span class="syntax-string">'Please install Spooky Doge wallet or open in the Spooky Doge app browser'</span>);
-    <span class="syntax-keyword">return null</span>;
-  }
-
-  <span class="syntax-keyword">try</span> {
-    <span class="syntax-comment">// Opens approval popup for user</span>
-    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">connect</span>();
-    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Connected! Address:'</span>, result.address);
-    <span class="syntax-keyword">return</span> result.address;
-  } <span class="syntax-keyword">catch</span> (error) {
-    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Connection rejected:'</span>, error.message);
-    <span class="syntax-keyword">return null</span>;
-  }
-}</code></pre>
-  
-  <h3>3. Get Account Information</h3>
-  <pre><code><span class="syntax-comment">// Get connected address</span>
-<span class="syntax-keyword">const</span> address = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getAddress</span>();
-
-<span class="syntax-comment">// Get wallet balance in koinu (1 DOGE = 100,000,000 koinu)</span>
-<span class="syntax-keyword">const</span> balance = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getBalance</span>();
-<span class="syntax-keyword">const</span> dogeBalance = balance / <span class="syntax-number">100000000</span>;
-
-<span class="syntax-comment">// Check if currently connected</span>
-<span class="syntax-keyword">const</span> connected = window.dogecoin.<span class="syntax-function">isConnected</span>();
-
-<span class="syntax-comment">// Get all connected accounts</span>
-<span class="syntax-keyword">const</span> accounts = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getAccounts</span>();</code></pre>
-  
-  <h3>4. Send DOGE</h3>
-  <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">sendPayment</span>(recipientAddress, amountInDoge) {
-  <span class="syntax-keyword">try</span> {
-    <span class="syntax-comment">// Opens transaction approval popup</span>
-    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendTransaction</span>({
-      to: recipientAddress,
-      amount: amountInDoge  <span class="syntax-comment">// Amount in DOGE (not koinu)</span>
-    });
-    
-    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Transaction sent! TXID:'</span>, result.txid);
-    <span class="syntax-keyword">return</span> result.txid;
-  } <span class="syntax-keyword">catch</span> (error) {
-    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Transaction failed:'</span>, error.message);
-    <span class="syntax-keyword">throw</span> error;
-  }
-}</code></pre>
-  
-  <h3>5. Work with Doginals (Inscriptions)</h3>
-  <pre><code><span class="syntax-comment">// Get all doginals in the wallet</span>
-<span class="syntax-keyword">const</span> doginals = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getDoginals</span>();
-doginals.<span class="syntax-function">forEach</span>(d => {
-  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Inscription:'</span>, d.inscriptionId);
-  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Image URL:'</span>, d.imageUrl);
-  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Content Type:'</span>, d.contentType);
-});
-
-<span class="syntax-comment">// Transfer a doginal</span>
-<span class="syntax-keyword">async function</span> <span class="syntax-function">transferDoginal</span>(inscriptionId, recipientAddress) {
-  <span class="syntax-keyword">try</span> {
-    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendDoginal</span>({
-      inscriptionId: inscriptionId,
-      to: recipientAddress
-    });
-    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Doginal transferred! TXID:'</span>, result.txid);
-    <span class="syntax-keyword">return</span> result.txid;
-  } <span class="syntax-keyword">catch</span> (error) {
-    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Transfer failed:'</span>, error.message);
-    <span class="syntax-keyword">throw</span> error;
-  }
-}</code></pre>
-  
-  <h3>6. Sign Messages</h3>
-  <pre><code><span class="syntax-comment">// Request a message signature (no cost, requires user approval)</span>
-<span class="syntax-keyword">async function</span> <span class="syntax-function">signMessage</span>(message) {
-  <span class="syntax-keyword">try</span> {
-    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">signMessage</span>(message);
-    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Signature:'</span>, result.signature);
-    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Signed by:'</span>, result.address);
-    <span class="syntax-keyword">return</span> result;
-  } <span class="syntax-keyword">catch</span> (error) {
-    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Signing failed:'</span>, error.message);
-    <span class="syntax-keyword">throw</span> error;
-  }
-}</code></pre>
-  
-  <h3>7. Listen for Events</h3>
-  <pre><code><span class="syntax-comment">// Account changes (user switches address)</span>
-window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'accountsChanged'</span>, (accounts) => {
-  <span class="syntax-keyword">if</span> (accounts.length === <span class="syntax-number">0</span>) {
-    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Wallet disconnected'</span>);
-  } <span class="syntax-keyword">else</span> {
-    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Active account:'</span>, accounts[<span class="syntax-number">0</span>]);
-  }
-});
-
-<span class="syntax-comment">// Connection events</span>
-window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'connect'</span>, ({ address }) => {
-  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Connected:'</span>, address);
-});
-
-window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'disconnect'</span>, () => {
-  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Wallet disconnected'</span>);
-});</code></pre>
+  <h2>What is Spooky Doge?</h2>
+  <p>Spooky Doge is a secure, non-custodial Dogecoin wallet that gives you full control over your DOGE and Doginals (inscriptions). Available on iOS, Android, and as a browser extension for Chrome and Edge.</p>
+  <p><strong>Non-custodial</strong> means your private keys never leave your device. Only you can access your funds.</p>
   
   <hr>
   
-  <h2>API Reference</h2>
-  
-  <h3>Provider Object</h3>
-  <p>Available at <code>window.dogecoin</code> or <code>window.spookyWallet</code></p>
-  
+  <h2>Getting the App</h2>
   <table>
     <thead>
       <tr>
-        <th>Property</th>
-        <th>Type</th>
-        <th>Description</th>
+        <th>Platform</th>
+        <th>Where to Get It</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><code>isSpookyWallet</code></td>
-        <td><code>boolean</code></td>
-        <td>Always <code>true</code> - identifies the wallet</td>
+        <td><strong>iOS</strong></td>
+        <td>App Store (search "Spooky Doge")</td>
       </tr>
       <tr>
-        <td><code>isConnected()</code></td>
-        <td><code>function</code></td>
-        <td>Returns <code>true</code> if site is connected</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  <h3>Methods</h3>
-  
-  <h4><code>connect()</code></h4>
-  <p>Request wallet connection. Opens approval popup.</p>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ address: string }&gt;</code></p>
-  
-  <h4><code>disconnect()</code></h4>
-  <p>Disconnect the dApp from the wallet.</p>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;void&gt;</code></p>
-  
-  <h4><code>getAddress()</code></h4>
-  <p>Get the currently connected address.</p>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;string | null&gt;</code> - Null if not connected</p>
-  
-  <h4><code>getAccounts()</code></h4>
-  <p>Get all connected accounts.</p>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;string[]&gt;</code></p>
-  
-  <h4><code>getBalance()</code></h4>
-  <p>Get wallet balance in koinu.</p>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;number&gt;</code> - Balance in koinu (divide by 100,000,000 for DOGE)</p>
-  
-  <h4><code>getDoginals()</code></h4>
-  <p>Get all doginals (inscriptions) in the wallet.</p>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;Doginal[]&gt;</code></p>
-  <pre><code><span class="syntax-keyword">interface</span> Doginal {
-  inscriptionId: <span class="syntax-keyword">string</span>;  <span class="syntax-comment">// Unique inscription identifier</span>
-  output: <span class="syntax-keyword">string</span>;         <span class="syntax-comment">// UTXO reference (txid:vout)</span>
-  contentType: <span class="syntax-keyword">string</span>;    <span class="syntax-comment">// MIME type (e.g., 'image/png', 'text/html')</span>
-  imageUrl: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// CDN URL for the content</span>
-  value?: <span class="syntax-keyword">number</span>;        <span class="syntax-comment">// UTXO value in DOGE (optional)</span>
-}</code></pre>
-  
-  <h4><code>sendTransaction(params)</code></h4>
-  <p>Request a DOGE transaction. Opens approval popup.</p>
-  <p><strong>Parameters:</strong></p>
-  <pre><code>{
-  to: <span class="syntax-keyword">string</span>;      <span class="syntax-comment">// Recipient Dogecoin address</span>
-  amount: <span class="syntax-keyword">number</span>;  <span class="syntax-comment">// Amount in DOGE (not koinu)</span>
-}</code></pre>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ txid: string }&gt;</code></p>
-  
-  <h4><code>sendDoginal(params)</code></h4>
-  <p>Request a doginal transfer. Opens approval popup.</p>
-  <p><strong>Parameters:</strong></p>
-  <pre><code>{
-  inscriptionId: <span class="syntax-keyword">string</span>;  <span class="syntax-comment">// The inscription ID to transfer</span>
-  to: <span class="syntax-keyword">string</span>;             <span class="syntax-comment">// Recipient Dogecoin address</span>
-}</code></pre>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ txid: string }&gt;</code></p>
-  
-  <h4><code>signMessage(message)</code></h4>
-  <p>Request a message signature. Opens approval popup. <span class="badge badge-green">Free - no DOGE cost</span></p>
-  <p><strong>Parameters:</strong> <code>message</code> (string) - The message to sign</p>
-  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ signature: string, address: string }&gt;</code></p>
-  <p>The signature is in Bitcoin/Dogecoin signed message format (base64-encoded, 65 bytes), compatible with <code>verifymessage</code> in Dogecoin Core.</p>
-  
-  <h4><code>request(args)</code></h4>
-  <p>EIP-1193 style request method for compatibility.</p>
-  <pre><code><span class="syntax-comment">// Examples</span>
-<span class="syntax-keyword">const</span> accounts = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({ method: <span class="syntax-string">'doge_requestAccounts'</span> });
-<span class="syntax-keyword">const</span> balance = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({ method: <span class="syntax-string">'doge_getBalance'</span> });
-<span class="syntax-keyword">const</span> doginals = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({ method: <span class="syntax-string">'doge_getDoginals'</span> });
-<span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
-  method: <span class="syntax-string">'doge_sendTransaction'</span>,
-  params: { to: <span class="syntax-string">'DAddress...'</span>, amount: <span class="syntax-number">10</span> }
-});</code></pre>
-  
-  <p><strong>Supported Methods:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Method</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td><code>doge_requestAccounts</code></td><td>Request wallet connection</td></tr>
-      <tr><td><code>doge_accounts</code></td><td>Get connected accounts</td></tr>
-      <tr><td><code>doge_getBalance</code></td><td>Get wallet balance</td></tr>
-      <tr><td><code>doge_getDoginals</code></td><td>Get doginals in wallet</td></tr>
-      <tr><td><code>doge_sendTransaction</code></td><td>Send DOGE</td></tr>
-      <tr><td><code>doge_sendDoginal</code></td><td>Transfer a doginal</td></tr>
-      <tr><td><code>doge_signMessage</code></td><td>Sign a message (free, no DOGE cost)</td></tr>
-      <tr><td><code>doge_chainId</code></td><td>Get chain identifier (<code>"dogecoin:mainnet"</code>)</td></tr>
-    </tbody>
-  </table>
-  
-  <h4><code>on(event, callback)</code></h4>
-  <p>Subscribe to wallet events.</p>
-  <p><strong>Events:</strong></p>
-  <ul>
-    <li><code>connect</code> - Fired when connected, receives <code>{ address: string }</code></li>
-    <li><code>disconnect</code> - Fired when disconnected</li>
-    <li><code>accountsChanged</code> - Fired when active address changes, receives <code>string[]</code></li>
-  </ul>
-  
-  <h4><code>removeListener(event, callback)</code></h4>
-  <p>Unsubscribe from wallet events.</p>
-  
-  <hr>
-  
-  <h2>Fee Structure</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Transaction Type</th>
-        <th>Network Fee</th>
-        <th>Dev Fee</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Regular DOGE send</td>
-        <td>Dynamic (based on tx size)</td>
-        <td>0.01 DOGE</td>
-        <td>Variable</td>
+        <td><strong>Android</strong></td>
+        <td>Google Play Store (search "Spooky Doge")</td>
       </tr>
       <tr>
-        <td>Doginal transfer</td>
-        <td>0.10 DOGE</td>
-        <td>0.01 DOGE</td>
-        <td>0.11 DOGE</td>
-      </tr>
-      <tr>
-        <td>Multi-doginal transfer</td>
-        <td>0.10 DOGE x count</td>
-        <td>0.01 DOGE</td>
-        <td>Variable</td>
+        <td><strong>Chrome/Edge</strong></td>
+        <td>Chrome Web Store (search "Spooky Doge Wallet")</td>
       </tr>
     </tbody>
   </table>
   
   <hr>
   
-  <h2>Error Handling</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Error Message</th>
-        <th>Cause</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td><code>"Connection rejected by user"</code></td><td>User declined connection request</td></tr>
-      <tr><td><code>"Site not connected"</code></td><td>dApp not connected to wallet</td></tr>
-      <tr><td><code>"Wallet not unlocked"</code></td><td>User hasn't unlocked the wallet</td></tr>
-      <tr><td><code>"Transaction rejected by user"</code></td><td>User declined transaction</td></tr>
-      <tr><td><code>"Doginal transfer rejected by user"</code></td><td>User declined doginal transfer</td></tr>
-      <tr><td><code>"Message signing rejected by user"</code></td><td>User declined signature request</td></tr>
-      <tr><td><code>"Insufficient funds"</code></td><td>Not enough DOGE for transaction + fees</td></tr>
-      <tr><td><code>"Inscription not found in wallet"</code></td><td>Requested inscription not in wallet</td></tr>
-    </tbody>
-  </table>
+  <h2>Getting Started</h2>
   
-  <hr>
-  
-  <h2>Security Notes</h2>
+  <h3>Creating a New Wallet</h3>
   <ol>
-    <li><strong>User Approval Required</strong> - All transactions require explicit user approval via popup</li>
-    <li><strong>Per-Site Permissions</strong> - Each website must be approved separately; users can manage connections in Settings</li>
-    <li><strong>Non-Custodial</strong> - Private keys never leave the wallet</li>
-    <li><strong>Inscription Protection</strong> - UTXOs under 0.1 DOGE are protected from regular spending</li>
-    <li><strong>Dev Fee Transparency</strong> - 0.01 DOGE dev fee included in all transactions</li>
+    <li><strong>Open the app</strong> and tap <strong>"Create New Wallet"</strong></li>
+    <li><strong>Set a password</strong> - This encrypts your wallet. Choose something strong and memorable. If you forget it, you'll need your backup phrase to recover.</li>
+    <li><strong>Write down your backup phrase</strong> - You'll be shown 12 words. Write these down on paper and store them safely. Never share them or take a screenshot.</li>
+    <li><strong>Verify your phrase</strong> - Confirm a few words to prove you saved them correctly.</li>
+    <li><strong>Done!</strong> Your wallet is ready to use.</li>
+  </ol>
+  
+  <h3>Importing an Existing Wallet</h3>
+  <p>Already have a Dogecoin wallet? You can import it:</p>
+  <ol>
+    <li>Tap <strong>"Import Wallet"</strong></li>
+    <li>Choose your import method:
+      <ul>
+        <li><strong>Seed Phrase</strong> - Enter your 12 or 24-word backup phrase</li>
+        <li><strong>Private Key (WIF)</strong> - Enter your WIF-format private key</li>
+      </ul>
+    </li>
+    <li><strong>Set a password</strong> to encrypt the wallet on this device</li>
+    <li>Your wallet and balance will appear</li>
   </ol>
   
   <hr>
   
-  <h2>Platform Notes</h2>
+  <h2>Main Features</h2>
   
-  <h3>Browser Extension</h3>
+  <h3>Home Screen - Viewing Your Balance</h3>
+  <p>The home screen shows:</p>
   <ul>
-    <li>Install from Chrome Web Store or load unpacked from <code>dist-extension</code> folder</li>
-    <li>Provider is injected automatically on all websites</li>
+    <li><strong>Total DOGE balance</strong> for your active address</li>
+    <li><strong>USD equivalent</strong> based on current market price (updates automatically)</li>
+    <li><strong>Your Dogecoin address</strong> - tap to copy to clipboard</li>
+    <li><strong>Recent transactions</strong> - your last 5 transactions at a glance</li>
+    <li>Quick access to <strong>Send</strong> and <strong>Receive</strong> buttons</li>
+  </ul>
+  <p><strong>Switching Addresses:</strong> Tap your address or account name to open the address selector. You can switch between addresses or manage your wallets from there.</p>
+  <p><strong>Switching Wallets:</strong> Tap "Manage Wallets" in the address selector to see all your wallets, rename them, view backup phrases, or add new wallets.</p>
+  
+  <hr>
+  
+  <h2>Sending DOGE</h2>
+  <ol>
+    <li>Tap the <strong>Send</strong> button</li>
+    <li><strong>Enter the recipient address</strong> - Paste from clipboard or tap the camera icon to scan a QR code</li>
+    <li><strong>Enter the amount</strong> in DOGE</li>
+    <li><strong>Review the transaction</strong> - The app shows the amount, network fee, and recipient</li>
+    <li><strong>Confirm</strong> - Authenticate with password or biometrics to sign</li>
+    <li><strong>Done!</strong> You'll see a confirmation with the transaction ID</li>
+  </ol>
+  
+  <p><strong>Fees:</strong> A small network fee (minimum 0.01 DOGE) is added automatically. The exact fee depends on transaction size.</p>
+  
+  <div class="tip">
+    <strong>Doginal Protection:</strong> UTXOs worth 0.1 DOGE or less are automatically protected and won't be spent as regular DOGE. This prevents accidentally destroying inscriptions.
+  </div>
+  
+  <h4>Advanced Mode</h4>
+  <p>For power users, toggle on <strong>Advanced Mode</strong> to select specific UTXOs (coins) to include in your transaction. As you select UTXOs, the screen displays running totals for your selected inputs along with the estimated network fee, dev fee, and change - all updating in real-time as you modify your selection.</p>
+  
+  <hr>
+  
+  <h2>Receiving DOGE</h2>
+  <ol>
+    <li>Tap the <strong>Receive</strong> button</li>
+    <li>Your address is displayed as a <strong>QR code</strong> and text</li>
+    <li><strong>Share</strong> the QR code or tap to copy the address</li>
+    <li>Send the address to whoever is paying you</li>
+  </ol>
+  <div class="tip">
+    <strong>Tip:</strong> Each HD wallet can generate multiple addresses. All addresses in the same wallet share the same backup phrase.
+  </div>
+  
+  <hr>
+  
+  <h2>Managing Multiple Wallets</h2>
+  <p>You can have multiple wallets in one app:</p>
+  <ol>
+    <li>From the home screen, tap your address or account name</li>
+    <li>Tap <strong>"Manage Wallets"</strong></li>
+    <li>From here you can:
+      <ul>
+        <li><strong>Switch</strong> between existing wallets (tap to select)</li>
+        <li><strong>Rename</strong> a wallet (tap the edit icon)</li>
+        <li><strong>View backup phrase</strong> for any wallet</li>
+        <li><strong>Add new wallet</strong> - Create a new one or import an existing seed/WIF</li>
+        <li><strong>Add derived address</strong> - Generate additional addresses from the same HD wallet</li>
+        <li><strong>Delete</strong> a wallet (requires confirmation)</li>
+      </ul>
+    </li>
+  </ol>
+  <p>Each wallet is independently encrypted and can have its own backup phrase.</p>
+  
+  <hr>
+  
+  <h2>Viewing Transaction History</h2>
+  <ol>
+    <li>Tap the <strong>History</strong> tab (clock icon)</li>
+    <li>See your transactions with:
+      <ul>
+        <li><strong>Amount</strong> sent or received</li>
+        <li><strong>Date</strong> of confirmation</li>
+        <li><strong>Status</strong> - confirmed or pending</li>
+      </ul>
+    </li>
+    <li>Tap any transaction to open it in a blockchain explorer</li>
+  </ol>
+  <p>Pull down to refresh and load more transactions.</p>
+  
+  <hr>
+  
+  <h2>Doginals (Inscriptions)</h2>
+  <p>Doginals are digital artifacts inscribed on the Dogecoin blockchain - similar to NFTs.</p>
+  
+  <h3>Viewing Your Doginals</h3>
+  <ol>
+    <li>Tap the <strong>Doginals</strong> tab</li>
+    <li>Browse your inscription collection in a tile/grid view</li>
+    <li>Each Doginal shows its image preview (or a placeholder icon if the image can't be loaded)</li>
+    <li>Tap any Doginal to see full details</li>
+  </ol>
+  
+  <h3>Sending Doginals</h3>
+  <ol>
+    <li>Go to the <strong>Doginals</strong> tab</li>
+    <li>Tap the <strong>Select</strong> button to enter selection mode</li>
+    <li>Tap the Doginal(s) you want to send</li>
+    <li>Tap <strong>Send Selected</strong></li>
+    <li>Enter the recipient's Dogecoin address</li>
+    <li>Review and confirm the transaction</li>
+  </ol>
+  
+  <p><strong>Multi-Send:</strong> You can select multiple Doginals to send in a single transaction.</p>
+  
+  <div class="tip">
+    <strong>Protection:</strong> Doginals are stored in small UTXOs (typically 0.1 DOGE or less). The wallet protects these from being spent as regular DOGE. When sending a Doginal, it's always placed as the first output to preserve ownership.
+  </div>
+  
+  <p><strong>Inscription Fee:</strong> Sending Doginals has a slightly higher fee (0.10 DOGE per inscription) to ensure the transaction is processed properly.</p>
+  
+  <hr>
+  
+  <h2>dApp Browser</h2>
+  <p>The built-in browser lets you connect to Dogecoin decentralized applications (dApps).</p>
+  
+  <h3>Using the dApp Browser</h3>
+  <ol>
+    <li>Tap the <strong>Browser</strong> tab (globe icon)</li>
+    <li>Enter a URL in the address bar or tap a favorite/recent site</li>
+    <li>Navigate the website like a normal browser</li>
+    <li>When a dApp requests to connect, you'll see an approval popup</li>
+  </ol>
+  
+  <h3>Connecting to dApps</h3>
+  <p>When a dApp wants to interact with your wallet:</p>
+  <ol>
+    <li>A popup appears asking for permission</li>
+    <li><strong>Review</strong> what the dApp is requesting</li>
+    <li><strong>Approve</strong> or <strong>Deny</strong> the request</li>
+  </ol>
+  <p><strong>You always approve each action.</strong> The dApp cannot spend your funds without your explicit confirmation.</p>
+  
+  <h3>What dApps Can Request</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Request</th>
+        <th>Description</th>
+        <th>Approval Required</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Connect</td>
+        <td>See your public address</td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td>Send DOGE</td>
+        <td>Create a transaction</td>
+        <td>Yes (shows amount/recipient)</td>
+      </tr>
+      <tr>
+        <td>Send Doginal</td>
+        <td>Transfer an inscription</td>
+        <td>Yes (shows which Doginal)</td>
+      </tr>
+      <tr>
+        <td>Sign Message</td>
+        <td>Sign data with your key</td>
+        <td>Yes</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <h3>Managing Tabs</h3>
+  <ul>
+    <li><strong>Multiple tabs</strong> - Tap the tabs icon to see all open tabs</li>
+    <li><strong>Add new tab</strong> - Tap the + button</li>
+    <li><strong>Close tab</strong> - Swipe or tap X on a tab</li>
+    <li><strong>Tabs persist</strong> - Your open tabs are saved when you close the app</li>
   </ul>
   
-  <h3>Mobile App</h3>
+  <h3>Favorites and Recent Sites</h3>
   <ul>
-    <li>Users must open your website through the in-app dApp browser (Browser tab)</li>
-    <li>Provider is injected into the WebView automatically</li>
-    <li>Ensure your site is mobile-responsive</li>
+    <li><strong>Add to favorites</strong> - Tap the menu icon and select "Add to Favorites" (star icon)</li>
+    <li><strong>Recent sites</strong> - Recently visited sites appear for quick access</li>
+    <li><strong>Set homepage</strong> - Choose which site loads when you open a new tab</li>
   </ul>
   
-  <h3>Suggesting Users Open in Spooky Doge</h3>
-  <pre><code><span class="syntax-keyword">if</span> (!<span class="syntax-function">isSpookyWalletAvailable</span>()) {
-  <span class="syntax-comment">// Show a banner or modal</span>
-  <span class="syntax-function">showModal</span>({
-    title: <span class="syntax-string">'Use Spooky Doge Wallet'</span>,
-    message: <span class="syntax-string">'For the best experience, open this site in the Spooky Doge app browser.'</span>,
-    buttons: [
-      { text: <span class="syntax-string">'Get the App'</span>, url: <span class="syntax-string">'https://spooksociety.xyz/wallet'</span> },
-      { text: <span class="syntax-string">'Continue Anyway'</span>, action: <span class="syntax-string">'dismiss'</span> }
-    ]
-  });
-}</code></pre>
+  <h3>Managing Connected Sites</h3>
+  <p>See which sites have permission to connect:</p>
+  <ol>
+    <li>Go to <strong>Settings</strong> tab</li>
+    <li>Tap <strong>Connected Sites</strong></li>
+    <li>View all connected dApps</li>
+    <li>Tap a site and confirm to disconnect (revokes its access)</li>
+  </ol>
+  
+  <h3>For Developers</h3>
+  <p>Building a dApp that works with Spooky Doge? See the complete integration guide: <a href="./SPOOKY_INTEGRATION.md"><strong>SPOOKY_INTEGRATION.md</strong></a></p>
+  
+  <hr>
+  
+  <h2>UTXO Management</h2>
+  <p>For advanced users who want to see exactly what's in their wallet:</p>
+  <ol>
+    <li>Tap the <strong>UTXOs</strong> tab</li>
+    <li>View all your unspent transaction outputs</li>
+    <li>See which UTXOs are:
+      <ul>
+        <li><strong>Spendable</strong> - Available for regular transactions</li>
+        <li><strong>Protected</strong> - Small UTXOs (0.1 DOGE or less) that may contain Doginals</li>
+      </ul>
+    </li>
+  </ol>
+  <p>This tab helps you understand your exact balance breakdown and see protected inscription outputs.</p>
+  
+  <hr>
+  
+  <h2>Settings</h2>
+  <p>Access settings by tapping the <strong>Settings</strong> tab (gear icon).</p>
+  
+  <h3>Security Options</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Setting</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Lock Wallet</strong></td>
+        <td>Immediately lock the wallet, requiring password to unlock</td>
+      </tr>
+      <tr>
+        <td><strong>Biometric Unlock</strong></td>
+        <td>Enable fingerprint or Face ID for quick unlocking</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <p>To enable biometrics:</p>
+  <ol>
+    <li>Toggle on the biometric option</li>
+    <li>Enter your password to confirm</li>
+    <li>Verify with your fingerprint or face</li>
+  </ol>
+  
+  <h3>Connected Sites</h3>
+  <p>View and manage which dApps have permission to see your address:</p>
+  <ul>
+    <li>See all connected sites</li>
+    <li>Tap a site and confirm the popup to disconnect it</li>
+  </ul>
+  
+  <h3>Account Actions</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Lock</strong></td>
+        <td>Lock the wallet (keeps data, requires password to unlock)</td>
+      </tr>
+      <tr>
+        <td><strong>Sign Out</strong></td>
+        <td>Delete all wallet data from this device (requires backup phrase to recover)</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div class="warning">
+    <strong>Warning:</strong> Sign Out permanently deletes your wallet from the device. Make sure you have your backup phrase before signing out!
+  </div>
+  
+  <hr>
+  
+  <h2>Security Features</h2>
+  
+  <h3>How Your Wallet is Protected</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>AES-256 Encryption</strong></td>
+        <td>Your seed phrase and private keys are encrypted with your password using industry-standard encryption</td>
+      </tr>
+      <tr>
+        <td><strong>Local-Only Keys</strong></td>
+        <td>Private keys never leave your device and are never sent to any server</td>
+      </tr>
+      <tr>
+        <td><strong>Secure Storage</strong></td>
+        <td>On mobile, secrets are stored in the iOS Keychain or Android Keystore - the most secure storage on your device</td>
+      </tr>
+      <tr>
+        <td><strong>Session Lock</strong></td>
+        <td>Decrypted keys are only in memory while the app is unlocked</td>
+      </tr>
+      <tr>
+        <td><strong>Auto-Lock</strong></td>
+        <td>Wallet locks automatically after 30 minutes of inactivity or 5 minutes in the background</td>
+      </tr>
+      <tr>
+        <td><strong>Biometric Auth</strong></td>
+        <td>Use fingerprint or Face ID to quickly unlock without typing your password</td>
+      </tr>
+      <tr>
+        <td><strong>Doginal Protection</strong></td>
+        <td>Small UTXOs (0.1 DOGE or less) are protected from accidental spending</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <h3>Best Practices</h3>
+  <ol>
+    <li><strong>Write down your backup phrase</strong> on paper, not digitally</li>
+    <li><strong>Store your backup</strong> in a safe place (fireproof safe, bank deposit box)</li>
+    <li><strong>Never share</strong> your seed phrase or private keys with anyone</li>
+    <li><strong>Use a strong password</strong> - at least 12 characters with mixed case, numbers, and symbols</li>
+    <li><strong>Enable biometrics</strong> for convenient but secure quick access</li>
+    <li><strong>Verify addresses</strong> carefully before sending - transactions cannot be reversed</li>
+  </ol>
+  
+  <h3>What Happens If...</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Solution</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>I forgot my password</strong></td>
+        <td>Use your 12/24-word backup phrase to restore your wallet</td>
+      </tr>
+      <tr>
+        <td><strong>I lost my phone</strong></td>
+        <td>Your wallet is encrypted. Install the app on a new device and restore with your backup phrase</td>
+      </tr>
+      <tr>
+        <td><strong>I lost my backup phrase</strong></td>
+        <td>If you still have access, go to Manage Wallets and tap to view the backup phrase. If you've lost both the phrase and access, your funds cannot be recovered</td>
+      </tr>
+      <tr>
+        <td><strong>Someone saw my screen</strong></td>
+        <td>Your password and seed phrase are hidden by default. If someone saw your full seed phrase, immediately transfer funds to a new wallet</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <hr>
+  
+  <h2>Fees Explained</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Fee Type</th>
+        <th>Amount</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Network Fee</strong></td>
+        <td>~0.01+ DOGE</td>
+        <td>Paid to Dogecoin miners to process your transaction. Varies by transaction size.</td>
+      </tr>
+      <tr>
+        <td><strong>Inscription Fee</strong></td>
+        <td>0.10 DOGE per Doginal</td>
+        <td>Higher fee for Doginal transfers to ensure inscription data is preserved</td>
+      </tr>
+      <tr>
+        <td><strong>Dev Fee</strong></td>
+        <td>0.01 DOGE</td>
+        <td>Small fee to support ongoing wallet development</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <hr>
+  
+  <h2>FAQ</h2>
+  
+  <h3>General</h3>
+  <p><strong>Q: Is Spooky Doge free?</strong><br>
+  A: Yes! The app is free to download and use. You only pay network fees when sending transactions.</p>
+  
+  <p><strong>Q: Can I use the same wallet on multiple devices?</strong><br>
+  A: Yes. Import your wallet using your seed phrase on any device. All devices will share the same addresses and funds.</p>
+  
+  <p><strong>Q: What if Spooky Doge shuts down?</strong><br>
+  A: Your funds are safe. Since you have your seed phrase, you can import it into any other Dogecoin wallet that supports BIP44 standard derivation (most wallets do).</p>
+  
+  <h3>Doginals</h3>
+  <p><strong>Q: Why can't I see my Doginal's image?</strong><br>
+  A: Image loading depends on external services. If an image doesn't load, try refreshing or check your internet connection. The Doginal is still safely in your wallet.</p>
+  
+  <p><strong>Q: Why is there 0.1 DOGE protection?</strong><br>
+  A: Doginals are stored in small UTXOs. Without protection, you might accidentally spend these as regular DOGE, destroying the inscription. The wallet prevents this by requiring explicit selection to send Doginals.</p>
+  
+  <p><strong>Q: Can I inscribe new Doginals with this wallet?</strong><br>
+  A: Currently, Spooky Doge supports viewing and sending existing Doginals. For inscribing new ones, use a dedicated inscription service.</p>
+  
+  <h3>Security</h3>
+  <p><strong>Q: Can Spooky Doge access my funds?</strong><br>
+  A: No. Your private keys are encrypted and stored only on your device. The Spooky Doge team has no access to your keys or funds.</p>
+  
+  <p><strong>Q: Is my seed phrase sent to any server?</strong><br>
+  A: Never. Your seed phrase is generated locally and encrypted locally. It never leaves your device.</p>
+  
+  <p><strong>Q: What if I find a bug or vulnerability?</strong><br>
+  A: Please report it responsibly by contacting the development team directly. Do not post security issues publicly.</p>
+  
+  <hr>
+  
+  <h2>Troubleshooting</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Issue</th>
+        <th>Solution</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Balance not updating</strong></td>
+        <td>Pull down to refresh. Check your internet connection.</td>
+      </tr>
+      <tr>
+        <td><strong>Transaction stuck/pending</strong></td>
+        <td>Dogecoin typically confirms in 1-2 minutes. If longer, the network may be congested.</td>
+      </tr>
+      <tr>
+        <td><strong>Can't send - "Insufficient funds"</strong></td>
+        <td>Your spendable balance excludes protected Doginal UTXOs. Check the UTXOs tab to see your breakdown.</td>
+      </tr>
+      <tr>
+        <td><strong>dApp not connecting</strong></td>
+        <td>Make sure you approved the connection request. Try refreshing the page. Check Settings > Connected Sites.</td>
+      </tr>
+      <tr>
+        <td><strong>Biometrics not working</strong></td>
+        <td>Go to Settings and re-enable biometric unlock. Ensure your device has biometrics set up.</td>
+      </tr>
+      <tr>
+        <td><strong>Wrong password error</strong></td>
+        <td>Passwords are case-sensitive. If you've forgotten it, restore using your backup phrase.</td>
+      </tr>
+      <tr>
+        <td><strong>Doginal not showing</strong></td>
+        <td>Pull to refresh. Some inscriptions may take time to index.</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <hr>
+  
+  <h2>For Developers</h2>
+  <p>Want to integrate your dApp with Spooky Doge wallet?</p>
+  <p>See the complete integration guide: <a href="./SPOOKY_INTEGRATION.md"><strong>SPOOKY_INTEGRATION.md</strong></a></p>
+  <p>The wallet provides an EIP-1193 compatible <code>window.dogecoin</code> provider with methods for:</p>
+  <ul>
+    <li>Requesting account access</li>
+    <li>Sending DOGE transactions</li>
+    <li>Getting and sending Doginals</li>
+    <li>Message signing</li>
+    <li>Event subscriptions</li>
+  </ul>
   
   <hr>
   
   <h2>Support</h2>
-  <p>For integration support or questions:</p>
   <ul>
-    <li><strong>Website:</strong> <a href="https://spooksociety.xyz">https://spooksociety.xyz</a></li>
+    <li><strong>Community:</strong> Join the Spooky Society community</li>
+    <li><strong>Issues:</strong> Report bugs through official channels</li>
+    <li><strong>Updates:</strong> Follow for the latest features and security updates</li>
   </ul>
   
   <div class="footer">
