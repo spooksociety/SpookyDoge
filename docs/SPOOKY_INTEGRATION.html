@@ -20,13 +20,13 @@
       --green: #22c55e;
       --yellow: #eab308;
     }
-    
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-    
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg-dark);
@@ -36,17 +36,17 @@
       max-width: 900px;
       margin: 0 auto;
     }
-    
+
     .logo-container {
       text-align: center;
       margin-bottom: 1rem;
     }
-    
+
     .logo-container img {
       width: 120px;
       height: auto;
     }
-    
+
     h1.main-title {
       font-family: 'Creepster', cursive;
       font-size: 3rem;
@@ -56,14 +56,14 @@
       margin-bottom: 0.5rem;
       letter-spacing: 2px;
     }
-    
+
     .subtitle {
       text-align: center;
       font-size: 1.1rem;
       color: var(--text-secondary);
       margin-bottom: 2rem;
     }
-    
+
     h2 {
       font-family: 'Nosifer', cursive;
       font-size: 1.4rem;
@@ -73,7 +73,7 @@
       border-bottom: 2px solid var(--border-color);
       letter-spacing: 1px;
     }
-    
+
     h3 {
       font-family: 'Inter', sans-serif;
       font-size: 1.25rem;
@@ -81,7 +81,7 @@
       margin: 1.5rem 0 0.75rem 0;
       font-weight: 600;
     }
-    
+
     h4 {
       font-family: 'Inter', sans-serif;
       font-size: 1.1rem;
@@ -91,44 +91,44 @@
       padding-top: 1rem;
       border-top: 1px solid var(--border-color);
     }
-    
+
     p {
       margin-bottom: 1rem;
     }
-    
+
     hr {
       border: none;
       border-top: 1px solid var(--border-color);
       margin: 2rem 0;
     }
-    
+
     ul, ol {
       margin-left: 1.5rem;
       margin-bottom: 1rem;
     }
-    
+
     li {
       margin-bottom: 0.5rem;
     }
-    
+
     strong {
       color: var(--text-primary);
       font-weight: 600;
     }
-    
+
     em {
       color: var(--purple);
     }
-    
+
     a {
       color: var(--purple);
       text-decoration: none;
     }
-    
+
     a:hover {
       text-decoration: underline;
     }
-    
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -138,23 +138,23 @@
       overflow: hidden;
       font-size: 0.95rem;
     }
-    
+
     th, td {
       padding: 0.75rem 1rem;
       text-align: left;
       border-bottom: 1px solid var(--border-color);
     }
-    
+
     th {
       background: rgba(147, 51, 234, 0.2);
       font-weight: 600;
       color: var(--purple);
     }
-    
+
     tr:last-child td {
       border-bottom: none;
     }
-    
+
     code {
       font-family: 'JetBrains Mono', monospace;
       background: var(--bg-card);
@@ -162,7 +162,7 @@
       border-radius: 4px;
       font-size: 0.9em;
     }
-    
+
     pre {
       background: var(--bg-code);
       border: 1px solid var(--border-color);
@@ -171,14 +171,14 @@
       overflow-x: auto;
       margin: 1rem 0;
     }
-    
+
     pre code {
       background: none;
       padding: 0;
       font-size: 0.85rem;
       line-height: 1.5;
     }
-    
+
     .tip {
       background: rgba(147, 51, 234, 0.1);
       border-left: 4px solid var(--purple);
@@ -186,7 +186,7 @@
       margin: 1rem 0;
       border-radius: 0 8px 8px 0;
     }
-    
+
     .warning {
       background: rgba(234, 179, 8, 0.1);
       border-left: 4px solid var(--yellow);
@@ -194,7 +194,7 @@
       margin: 1rem 0;
       border-radius: 0 8px 8px 0;
     }
-    
+
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -202,7 +202,7 @@
       padding: 1.5rem;
       margin: 1rem 0;
     }
-    
+
     .method-signature {
       background: var(--bg-card);
       padding: 0.75rem 1rem;
@@ -212,24 +212,24 @@
       margin: 0.5rem 0;
       border-left: 3px solid var(--purple);
     }
-    
+
     .returns {
       color: var(--green);
       font-size: 0.9rem;
       margin-top: 0.5rem;
     }
-    
+
     .footer {
       text-align: center;
       margin-top: 3rem;
       padding-top: 2rem;
       border-top: 1px solid var(--border-color);
     }
-    
+
     .footer p {
       margin-bottom: 0.25rem;
     }
-    
+
     .badge {
       display: inline-block;
       padding: 0.25rem 0.5rem;
@@ -238,27 +238,27 @@
       font-weight: 500;
       margin-right: 0.5rem;
     }
-    
+
     .badge-purple {
       background: rgba(147, 51, 234, 0.2);
       color: var(--purple);
     }
-    
+
     .badge-green {
       background: rgba(34, 197, 94, 0.2);
       color: var(--green);
     }
-    
+
     .syntax-keyword { color: #c792ea; }
     .syntax-function { color: #82aaff; }
     .syntax-string { color: #c3e88d; }
     .syntax-comment { color: #676e95; }
     .syntax-number { color: #f78c6c; }
-    
+
     .code-block {
       position: relative;
     }
-    
+
     .copy-btn {
       position: absolute;
       top: 8px;
@@ -276,24 +276,24 @@
       align-items: center;
       gap: 4px;
     }
-    
+
     .copy-btn:hover {
       background: var(--purple);
       color: var(--text-primary);
       border-color: var(--purple);
     }
-    
+
     .copy-btn.copied {
       background: var(--green);
       color: white;
       border-color: var(--green);
     }
-    
+
     .copy-btn svg {
       width: 14px;
       height: 14px;
     }
-    
+
     .nav-links {
       text-align: center;
       margin: 1.5rem 0;
@@ -302,18 +302,18 @@
       border-radius: 8px;
       border: 1px solid var(--border-color);
     }
-    
+
     .nav-links a {
       color: var(--purple);
       font-weight: 500;
       padding: 0.5rem 1rem;
       transition: color 0.2s;
     }
-    
+
     .nav-links a:hover {
       color: var(--text-primary);
     }
-    
+
     .nav-divider {
       color: var(--border-color);
       margin: 0 0.5rem;
@@ -324,18 +324,18 @@
   <div class="logo-container">
     <img src="ghost-doge-logo.png" alt="Spooky Doge Logo">
   </div>
-  
+
   <h1 class="main-title">dApp Integration Guide</h1>
   <p class="subtitle">Integrate your dApp with Spooky Doge wallet for Dogecoin payments and Doginal transfers</p>
-  
+
   <div class="nav-links">
     <a href="https://spooksociety.github.io/SpookyDoge/">User Guide</a>
     <span class="nav-divider">|</span>
     <a href="privacy.html">Privacy Policy</a>
   </div>
-  
+
   <hr>
-  
+
   <h2>Platform Support</h2>
   <p>Spooky Doge wallet is available on:</p>
   <ul>
@@ -345,11 +345,11 @@
   <div class="tip">
     <strong>Both platforms inject the same <code>window.dogecoin</code> provider</strong>, so you can support all users with a single codebase.
   </div>
-  
+
   <hr>
-  
+
   <h2>Quick Start</h2>
-  
+
   <h3>1. Detect the Wallet</h3>
   <pre><code><span class="syntax-comment">// Check if Spooky Doge wallet is available</span>
 <span class="syntax-keyword">function</span> <span class="syntax-function">isSpookyWalletAvailable</span>() {
@@ -360,7 +360,7 @@
 window.<span class="syntax-function">addEventListener</span>(<span class="syntax-string">'dogecoin#initialized'</span>, () => {
   console.<span class="syntax-function">log</span>(<span class="syntax-string">'Spooky Doge wallet detected!'</span>);
 });</code></pre>
-  
+
   <h3>2. Connect to the Wallet</h3>
   <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">connectWallet</span>() {
   <span class="syntax-keyword">if</span> (!<span class="syntax-function">isSpookyWalletAvailable</span>()) {
@@ -378,7 +378,7 @@ window.<span class="syntax-function">addEventListener</span>(<span class="syntax
     <span class="syntax-keyword">return null</span>;
   }
 }</code></pre>
-  
+
   <h3>3. Get Account Information</h3>
   <pre><code><span class="syntax-comment">// Get connected address</span>
 <span class="syntax-keyword">const</span> address = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getAddress</span>();
@@ -392,7 +392,7 @@ window.<span class="syntax-function">addEventListener</span>(<span class="syntax
 
 <span class="syntax-comment">// Get all connected accounts</span>
 <span class="syntax-keyword">const</span> accounts = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getAccounts</span>();</code></pre>
-  
+
   <h3>4. Send DOGE</h3>
   <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">sendPayment</span>(recipientAddress, amountInDoge) {
   <span class="syntax-keyword">try</span> {
@@ -401,7 +401,7 @@ window.<span class="syntax-function">addEventListener</span>(<span class="syntax
       to: recipientAddress,
       amount: amountInDoge  <span class="syntax-comment">// Amount in DOGE (not koinu)</span>
     });
-    
+
     console.<span class="syntax-function">log</span>(<span class="syntax-string">'Transaction sent! TXID:'</span>, result.txid);
     <span class="syntax-keyword">return</span> result.txid;
   } <span class="syntax-keyword">catch</span> (error) {
@@ -409,7 +409,7 @@ window.<span class="syntax-function">addEventListener</span>(<span class="syntax
     <span class="syntax-keyword">throw</span> error;
   }
 }</code></pre>
-  
+
   <h3>5. Work with Doginals (Inscriptions)</h3>
   <pre><code><span class="syntax-comment">// Get all doginals in the wallet</span>
 <span class="syntax-keyword">const</span> doginals = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getDoginals</span>();
@@ -433,7 +433,7 @@ doginals.<span class="syntax-function">forEach</span>(d => {
     <span class="syntax-keyword">throw</span> error;
   }
 }</code></pre>
-  
+
   <h3>6. Sign Messages</h3>
   <pre><code><span class="syntax-comment">// Request a message signature (no cost, requires user approval)</span>
 <span class="syntax-keyword">async function</span> <span class="syntax-function">signMessage</span>(message) {
@@ -447,7 +447,7 @@ doginals.<span class="syntax-function">forEach</span>(d => {
     <span class="syntax-keyword">throw</span> error;
   }
 }</code></pre>
-  
+
   <h3>7. Listen for Events</h3>
   <pre><code><span class="syntax-comment">// Account changes (user switches address)</span>
 window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'accountsChanged'</span>, (accounts) => {
@@ -466,14 +466,14 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
 window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'disconnect'</span>, () => {
   console.<span class="syntax-function">log</span>(<span class="syntax-string">'Wallet disconnected'</span>);
 });</code></pre>
-  
+
   <hr>
-  
+
   <h2>API Reference</h2>
-  
+
   <h3>Provider Object</h3>
   <p>Available at <code>window.dogecoin</code> or <code>window.spookyWallet</code></p>
-  
+
   <table>
     <thead>
       <tr>
@@ -495,29 +495,29 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
       </tr>
     </tbody>
   </table>
-  
+
   <h3>Methods</h3>
-  
+
   <h4><code>connect()</code></h4>
   <p>Request wallet connection. Opens approval popup.</p>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ address: string }&gt;</code></p>
-  
+
   <h4><code>disconnect()</code></h4>
   <p>Disconnect the dApp from the wallet.</p>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;void&gt;</code></p>
-  
+
   <h4><code>getAddress()</code></h4>
   <p>Get the currently connected address.</p>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;string | null&gt;</code> - Null if not connected</p>
-  
+
   <h4><code>getAccounts()</code></h4>
   <p>Get all connected accounts.</p>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;string[]&gt;</code></p>
-  
+
   <h4><code>getBalance()</code></h4>
   <p>Get wallet balance in koinu.</p>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;number&gt;</code> - Balance in koinu (divide by 100,000,000 for DOGE)</p>
-  
+
   <h4><code>getDoginals()</code></h4>
   <p>Get all doginals (inscriptions) in the wallet.</p>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;Doginal[]&gt;</code></p>
@@ -528,7 +528,7 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
   imageUrl: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// CDN URL for the content</span>
   value?: <span class="syntax-keyword">number</span>;        <span class="syntax-comment">// UTXO value in DOGE (optional)</span>
 }</code></pre>
-  
+
   <h4><code>sendTransaction(params)</code></h4>
   <p>Request a DOGE transaction. Opens approval popup.</p>
   <p><strong>Parameters:</strong></p>
@@ -537,7 +537,7 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
   amount: <span class="syntax-keyword">number</span>;  <span class="syntax-comment">// Amount in DOGE (not koinu)</span>
 }</code></pre>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ txid: string }&gt;</code></p>
-  
+
   <h4><code>sendDoginal(params)</code></h4>
   <p>Request a doginal transfer. Opens approval popup.</p>
   <p><strong>Parameters:</strong></p>
@@ -546,13 +546,46 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
   to: <span class="syntax-keyword">string</span>;             <span class="syntax-comment">// Recipient Dogecoin address</span>
 }</code></pre>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ txid: string }&gt;</code></p>
-  
+
   <h4><code>signMessage(message)</code></h4>
   <p>Request a message signature. Opens approval popup. <span class="badge badge-green">Free - no DOGE cost</span></p>
   <p><strong>Parameters:</strong> <code>message</code> (string) - The message to sign</p>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ signature: string, address: string }&gt;</code></p>
   <p>The signature is in Bitcoin/Dogecoin signed message format (base64-encoded, 65 bytes), compatible with <code>verifymessage</code> in Dogecoin Core.</p>
-  
+
+  <h4><code>signPsbt(params)</code></h4>
+  <p>Request signing of a partially signed transaction (PSBT). Opens approval popup. <span class="badge badge-purple">Marketplace Integration</span></p>
+  <p>This method enables marketplaces like InuBits to request partial transaction signing for trading Doginals, DRC-20 tokens, and Dunes. The wallet signs only the specified inputs, returning the signed hex to the marketplace for finalization and broadcast.</p>
+  <p><strong>Parameters:</strong></p>
+  <pre><code>{
+  psbtHex: <span class="syntax-keyword">string</span>;        <span class="syntax-comment">// Raw transaction hex to sign</span>
+  signInputs?: <span class="syntax-keyword">number</span>[];  <span class="syntax-comment">// Input indices to sign (default: all)</span>
+  sighashTypes?: <span class="syntax-keyword">number</span>[]; <span class="syntax-comment">// Sighash types (default: [0x01] SIGHASH_ALL)</span>
+  message?: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// Optional message to display to user</span>
+}</code></pre>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ signedPsbtHex: string }&gt;</code></p>
+  <div class="warning">
+    <strong>Security Note:</strong> Users must review and explicitly approve each PSBT signing request. The approval popup displays the origin, transaction data, and any message from the marketplace.
+  </div>
+
+  <h3>Example: Marketplace Integration</h3>
+  <pre><code><span class="syntax-comment">// Example: Request PSBT signing for a marketplace trade</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">signMarketplaceTrade</span>(psbtHex, inputsToSign) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">signPsbt</span>({
+      psbtHex: psbtHex,
+      signInputs: inputsToSign,
+      message: <span class="syntax-string">'Sign to complete your trade on MyMarketplace'</span>
+    });
+    
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Signed transaction:'</span>, result.signedPsbtHex);
+    <span class="syntax-keyword">return</span> result.signedPsbtHex;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'PSBT signing failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}</code></pre>
+
   <h4><code>request(args)</code></h4>
   <p>EIP-1193 style request method for compatibility.</p>
   <pre><code><span class="syntax-comment">// Examples</span>
@@ -563,7 +596,7 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
   method: <span class="syntax-string">'doge_sendTransaction'</span>,
   params: { to: <span class="syntax-string">'DAddress...'</span>, amount: <span class="syntax-number">10</span> }
 });</code></pre>
-  
+
   <p><strong>Supported Methods:</strong></p>
   <table>
     <thead>
@@ -580,10 +613,11 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
       <tr><td><code>doge_sendTransaction</code></td><td>Send DOGE</td></tr>
       <tr><td><code>doge_sendDoginal</code></td><td>Transfer a doginal</td></tr>
       <tr><td><code>doge_signMessage</code></td><td>Sign a message (free, no DOGE cost)</td></tr>
+      <tr><td><code>doge_signPsbt</code></td><td>Sign a partially signed transaction (marketplace integration)</td></tr>
       <tr><td><code>doge_chainId</code></td><td>Get chain identifier (<code>"dogecoin:mainnet"</code>)</td></tr>
     </tbody>
   </table>
-  
+
   <h4><code>on(event, callback)</code></h4>
   <p>Subscribe to wallet events.</p>
   <p><strong>Events:</strong></p>
@@ -592,12 +626,12 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
     <li><code>disconnect</code> - Fired when disconnected</li>
     <li><code>accountsChanged</code> - Fired when active address changes, receives <code>string[]</code></li>
   </ul>
-  
+
   <h4><code>removeListener(event, callback)</code></h4>
   <p>Unsubscribe from wallet events.</p>
-  
+
   <hr>
-  
+
   <h2>Fee Structure</h2>
   <table>
     <thead>
@@ -629,9 +663,9 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
       </tr>
     </tbody>
   </table>
-  
+
   <hr>
-  
+
   <h2>Error Handling</h2>
   <table>
     <thead>
@@ -647,13 +681,15 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
       <tr><td><code>"Transaction rejected by user"</code></td><td>User declined transaction</td></tr>
       <tr><td><code>"Doginal transfer rejected by user"</code></td><td>User declined doginal transfer</td></tr>
       <tr><td><code>"Message signing rejected by user"</code></td><td>User declined signature request</td></tr>
+      <tr><td><code>"PSBT signing rejected by user"</code></td><td>User declined PSBT signing request</td></tr>
+      <tr><td><code>"Invalid PSBT params: psbtHex is required"</code></td><td>Missing psbtHex parameter</td></tr>
       <tr><td><code>"Insufficient funds"</code></td><td>Not enough DOGE for transaction + fees</td></tr>
       <tr><td><code>"Inscription not found in wallet"</code></td><td>Requested inscription not in wallet</td></tr>
     </tbody>
   </table>
-  
+
   <hr>
-  
+
   <h2>Security Notes</h2>
   <ol>
     <li><strong>User Approval Required</strong> - All transactions require explicit user approval via popup</li>
@@ -662,24 +698,24 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
     <li><strong>Inscription Protection</strong> - UTXOs under 0.1 DOGE are protected from regular spending</li>
     <li><strong>Dev Fee Transparency</strong> - 0.01 DOGE dev fee included in all transactions</li>
   </ol>
-  
+
   <hr>
-  
+
   <h2>Platform Notes</h2>
-  
+
   <h3>Browser Extension</h3>
   <ul>
     <li>Install from Chrome Web Store or load unpacked from <code>dist-extension</code> folder</li>
     <li>Provider is injected automatically on all websites</li>
   </ul>
-  
+
   <h3>Mobile App</h3>
   <ul>
     <li>Users must open your website through the in-app dApp browser (Browser tab)</li>
     <li>Provider is injected into the WebView automatically</li>
     <li>Ensure your site is mobile-responsive</li>
   </ul>
-  
+
   <h3>Suggesting Users Open in Spooky Doge</h3>
   <pre><code><span class="syntax-keyword">if</span> (!<span class="syntax-function">isSpookyWalletAvailable</span>()) {
   <span class="syntax-comment">// Show a banner or modal</span>
@@ -692,15 +728,15 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
     ]
   });
 }</code></pre>
-  
+
   <hr>
-  
+
   <h2>Support</h2>
   <p>For integration support or questions:</p>
   <ul>
     <li><strong>Website:</strong> <a href="https://spooksociety.xyz">https://spooksociety.xyz</a></li>
   </ul>
-  
+
   <div class="footer">
     <p><strong>Built with care for the Spook Society</strong></p>
     <p><em>Much wow. Very secure. So spooky.</em></p>
@@ -710,26 +746,26 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
     document.addEventListener('DOMContentLoaded', function() {
       const copyIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>';
       const checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
-      
+
       document.querySelectorAll('pre').forEach(function(pre) {
         const wrapper = document.createElement('div');
         wrapper.className = 'code-block';
         pre.parentNode.insertBefore(wrapper, pre);
         wrapper.appendChild(pre);
-        
+
         const btn = document.createElement('button');
         btn.className = 'copy-btn';
         btn.innerHTML = copyIcon + 'Copy';
         wrapper.appendChild(btn);
-        
+
         btn.addEventListener('click', function() {
           const code = pre.querySelector('code');
           const text = code ? code.textContent : pre.textContent;
-          
+
           navigator.clipboard.writeText(text).then(function() {
             btn.innerHTML = checkIcon + 'Copied!';
             btn.classList.add('copied');
-            
+
             setTimeout(function() {
               btn.innerHTML = copyIcon + 'Copy';
               btn.classList.remove('copied');
