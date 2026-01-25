@@ -243,7 +243,7 @@
   <hr>
   
   <h2>What is Spooky Doge?</h2>
-  <p>Spooky Doge is a secure, non-custodial Dogecoin wallet that gives you full control over your DOGE and Doginals (inscriptions). Available on iOS, Android, and as a browser extension for Chrome and Edge.</p>
+  <p>Spooky Doge is a secure, non-custodial Dogecoin wallet that gives you full control over your DOGE, Doginals (inscriptions), DRC-20 tokens, and Dunes. Available on iOS, Android, and as a browser extension for Chrome and Edge.</p>
   <p><strong>Non-custodial</strong> means your private keys never leave your device. Only you can access your funds.</p>
   
   <hr>
@@ -259,15 +259,15 @@
     <tbody>
       <tr>
         <td><strong>iOS</strong></td>
-        <td>App Store (COMING SOON)</td>
+        <td><a href="https://testflight.apple.com/join/VmVcPpGk">TestFlight (Beta)</a></td>
       </tr>
       <tr>
         <td><strong>Android</strong></td>
-        <td>Google Play Store (IN CLOSED TESTING)</td>
+        <td><a href="https://play.google.com/store/apps/details?id=xyz.spooksociety.wallet&utm_source=na_Med">Google Play Store</a></td>
       </tr>
       <tr>
         <td><strong>Chrome/Edge</strong></td>
-        <td>Chrome Web Store (COMING SOON)</td>
+        <td><a href="https://chromewebstore.google.com/detail/spooky-doge/llefaokflckonkllgdflmboibglnbbac?authuser=0&hl=en">Chrome Web Store</a></td>
       </tr>
     </tbody>
   </table>
@@ -334,6 +334,9 @@
   
   <h4>Advanced Mode</h4>
   <p>For power users, toggle on <strong>Advanced Mode</strong> to select specific UTXOs (coins) to include in your transaction. As you select UTXOs, the screen displays running totals for your selected inputs along with the estimated network fee, dev fee, and change - all updating in real-time as you modify your selection.</p>
+  
+  <h4>Split Mode</h4>
+  <p>In Advanced Mode, you can also use <strong>Split Mode</strong> to divide your selected UTXOs into multiple equal outputs sent back to your wallet. This is useful for preparing UTXOs for batch operations. Choose between 2-20 splits, with any dust remainder going to miners.</p>
   
   <hr>
   
@@ -413,7 +416,66 @@
     <strong>Protection:</strong> Doginals are stored in small UTXOs (typically 0.1 DOGE or less). The wallet protects these from being spent as regular DOGE. When sending a Doginal, it's always placed as the first output to preserve ownership.
   </div>
   
-  <p><strong>Inscription Fee:</strong> Sending Doginals has a slightly higher fee (0.10 DOGE per inscription) to ensure the transaction is processed properly.</p>
+  <p><strong>Inscription Fee:</strong> Sending Doginals has a slightly higher fee (0.02 DOGE per inscription) to ensure the transaction is processed properly.</p>
+  
+  <h3>Protecting Unprotected Inscriptions</h3>
+  <p>Some Doginals may be on larger UTXOs (more than 0.1 DOGE), making them vulnerable to accidental spending. You can protect these:</p>
+  <ol>
+    <li>Find inscriptions marked as "unprotected" in the Doginals tab</li>
+    <li>Tap the <strong>Protect</strong> option</li>
+    <li>The wallet will move the inscription to a safe 0.001 DOGE output</li>
+  </ol>
+  
+  <h3>Pending Sends</h3>
+  <p>After sending a Doginal, it shows a "pending" badge for up to 10 minutes while waiting for confirmation. During this time, the inscription cannot be sent again.</p>
+  
+  <hr>
+  
+  <h2>DRC-20 Tokens</h2>
+  <p>DRC-20 tokens are fungible tokens on the Dogecoin blockchain, similar to ERC-20 tokens on Ethereum.</p>
+  
+  <h3>Viewing Your Tokens</h3>
+  <ol>
+    <li>On mobile, tap the <strong>Tokens</strong> tab</li>
+    <li>Use the switcher at the top to toggle between <strong>DRC-20</strong> and <strong>Dunes</strong></li>
+    <li>See your token balances with:
+      <ul>
+        <li><strong>Available</strong> - Ready to transfer immediately</li>
+        <li><strong>Transferable</strong> - In pending transfer inscriptions</li>
+        <li><strong>Total</strong> - Combined balance</li>
+      </ul>
+    </li>
+  </ol>
+  
+  <h3>Sending DRC-20 Tokens</h3>
+  <ol>
+    <li>Tap the token you want to send</li>
+    <li>Tap <strong>Send</strong></li>
+    <li>Enter the amount and recipient address</li>
+    <li>Review and confirm</li>
+  </ol>
+  <p>The wallet creates a transfer inscription and sends it to the recipient. Fee: 0.02 DOGE.</p>
+  
+  <hr>
+  
+  <h2>Dunes Tokens</h2>
+  <p>Dunes are another type of token on Dogecoin, using Runestone encoding for efficient transfers.</p>
+  
+  <h3>Viewing Your Dunes</h3>
+  <ol>
+    <li>On mobile, tap the <strong>Tokens</strong> tab</li>
+    <li>Switch to <strong>Dunes</strong> using the toggle at the top</li>
+    <li>Browse your Dunes with their logos and balances</li>
+  </ol>
+  
+  <h3>Sending Dunes</h3>
+  <ol>
+    <li>Tap the Dune you want to send</li>
+    <li>Tap <strong>Send</strong></li>
+    <li>Enter the amount and recipient address</li>
+    <li>Review and confirm</li>
+  </ol>
+  <p><strong>Fees:</strong> Single Dune transfers cost 0.02 DOGE. If sending from a UTXO containing multiple Dunes, the fee is 0.20 DOGE (other Dunes are automatically split to separate outputs for safety).</p>
   
   <hr>
   
@@ -463,9 +525,24 @@
         <td>Yes (shows which Doginal)</td>
       </tr>
       <tr>
+        <td>Send DRC-20</td>
+        <td>Transfer tokens</td>
+        <td>Yes (shows token/amount)</td>
+      </tr>
+      <tr>
+        <td>Send Dune</td>
+        <td>Transfer Dunes tokens</td>
+        <td>Yes (shows dune/amount)</td>
+      </tr>
+      <tr>
         <td>Sign Message</td>
         <td>Sign data with your key</td>
         <td>Yes</td>
+      </tr>
+      <tr>
+        <td>Sign Transaction</td>
+        <td>Sign a marketplace transaction</td>
+        <td>Yes (shows transaction details)</td>
       </tr>
     </tbody>
   </table>
@@ -494,15 +571,21 @@
     <li>Tap a site and confirm to disconnect (revokes its access)</li>
   </ol>
   
-  <h3>For Developers</h3>
-  <p>Building a dApp that works with Spooky Doge? See the complete integration guide: <a href="./SPOOKY_INTEGRATION.md"><strong>SPOOKY_INTEGRATION.md</strong></a></p>
+  <h3>Deep Links</h3>
+  <p>External apps can open Spooky Doge directly using deep links:</p>
+  <ul>
+    <li><code>spookydoge://send?address=D...</code> - Opens send screen with address pre-filled</li>
+    <li><code>spookydoge://browser?url=https://...</code> - Opens the dApp browser to a URL</li>
+  </ul>
+  <p>The QR codes on your receive screen use this format, making them scannable by camera apps.</p>
   
   <hr>
   
   <h2>UTXO Management</h2>
   <p>For advanced users who want to see exactly what's in their wallet:</p>
   <ol>
-    <li>Tap the <strong>UTXOs</strong> tab</li>
+    <li>On mobile, go to <strong>Settings</strong> and tap <strong>Advanced UTXO Management</strong></li>
+    <li>On extension, tap the <strong>UTXOs</strong> tab</li>
     <li>View all your unspent transaction outputs</li>
     <li>See which UTXOs are:
       <ul>
@@ -511,12 +594,28 @@
       </ul>
     </li>
   </ol>
-  <p>This tab helps you understand your exact balance breakdown and see protected inscription outputs.</p>
+  <p>This helps you understand your exact balance breakdown and see protected inscription outputs.</p>
   
   <hr>
   
   <h2>Settings</h2>
   <p>Access settings by tapping the <strong>Settings</strong> tab (gear icon).</p>
+  
+  <h3>Appearance</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Setting</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Theme</strong></td>
+        <td>Toggle between dark and light mode. The app defaults to dark mode.</td>
+      </tr>
+    </tbody>
+  </table>
   
   <h3>Security Options</h3>
   <table>
@@ -550,6 +649,11 @@
   <ul>
     <li>See all connected sites</li>
     <li>Tap a site and confirm the popup to disconnect it</li>
+  </ul>
+  
+  <h3>Advanced (Mobile)</h3>
+  <ul>
+    <li><strong>Advanced UTXO Management</strong> - View and manage your UTXOs directly</li>
   </ul>
   
   <h3>Account Actions</h3>
@@ -676,9 +780,14 @@
         <td>Paid to Dogecoin miners to process your transaction. Varies by transaction size.</td>
       </tr>
       <tr>
-        <td><strong>Inscription Fee</strong></td>
-        <td>0.10 DOGE per Doginal</td>
-        <td>Higher fee for Doginal transfers to ensure inscription data is preserved</td>
+        <td><strong>Inscription/Token Fee</strong></td>
+        <td>0.02 DOGE</td>
+        <td>Fee for Doginal, DRC-20, or Dune transfers</td>
+      </tr>
+      <tr>
+        <td><strong>Multi-Dune Fee</strong></td>
+        <td>0.20 DOGE</td>
+        <td>Higher fee when sending from UTXOs with multiple Dunes (covers auto-split)</td>
       </tr>
       <tr>
         <td><strong>Dev Fee</strong></td>
@@ -690,11 +799,12 @@
   
   <hr>
   
-  <h2>FAQ</h2>
+  <h2>Frequently Asked Questions</h2>
   
   <h3>General</h3>
+  
   <p><strong>Q: Is Spooky Doge free?</strong><br>
-  A: Yes! The app is free to download and use. You only pay network fees when sending transactions.</p>
+  A: Yes! The app is free to download and use. You only pay small network and dev fees when sending transactions.</p>
   
   <p><strong>Q: Can I use the same wallet on multiple devices?</strong><br>
   A: Yes. Import your wallet using your seed phrase on any device. All devices will share the same addresses and funds.</p>
@@ -703,6 +813,7 @@
   A: Your funds are safe. Since you have your seed phrase, you can import it into any other Dogecoin wallet that supports BIP44 standard derivation (most wallets do).</p>
   
   <h3>Doginals</h3>
+  
   <p><strong>Q: Why can't I see my Doginal's image?</strong><br>
   A: Image loading depends on external services. If an image doesn't load, try refreshing or check your internet connection. The Doginal is still safely in your wallet.</p>
   
@@ -712,7 +823,16 @@
   <p><strong>Q: Can I inscribe new Doginals with this wallet?</strong><br>
   A: Currently, Spooky Doge supports viewing and sending existing Doginals. For inscribing new ones, use a dedicated inscription service.</p>
   
+  <h3>Tokens</h3>
+  
+  <p><strong>Q: What's the difference between DRC-20 and Dunes?</strong><br>
+  A: Both are token standards on Dogecoin. DRC-20 uses inscription-based transfers, while Dunes uses Runestone encoding. Spooky Doge supports both.</p>
+  
+  <p><strong>Q: Why is the multi-Dune fee higher?</strong><br>
+  A: When a UTXO contains multiple Dunes, sending one requires automatically splitting the others into separate safe outputs. This adds complexity and a higher network fee.</p>
+  
   <h3>Security</h3>
+  
   <p><strong>Q: Can Spooky Doge access my funds?</strong><br>
   A: No. Your private keys are encrypted and stored only on your device. The Spooky Doge team has no access to your keys or funds.</p>
   
@@ -743,7 +863,7 @@
       </tr>
       <tr>
         <td><strong>Can't send - "Insufficient funds"</strong></td>
-        <td>Your spendable balance excludes protected Doginal UTXOs. Check the UTXOs tab to see your breakdown.</td>
+        <td>Your spendable balance excludes protected Doginal UTXOs. Check the UTXO management to see your breakdown.</td>
       </tr>
       <tr>
         <td><strong>dApp not connecting</strong></td>
@@ -761,56 +881,27 @@
         <td><strong>Doginal not showing</strong></td>
         <td>Pull to refresh. Some inscriptions may take time to index.</td>
       </tr>
+      <tr>
+        <td><strong>Token balance not showing</strong></td>
+        <td>Pull to refresh. Token balances are fetched from external indexers which may have delays.</td>
+      </tr>
     </tbody>
   </table>
   
   <hr>
   
-  <h2>For Developers</h2>
-  <p>Want to integrate your dApp with Spooky Doge wallet?</p>
-  <p>See the complete integration guide: <a href="./SPOOKY_INTEGRATION.md"><strong>SPOOKY_INTEGRATION.md</strong></a></p>
-  <p>The wallet provides an EIP-1193 compatible <code>window.dogecoin</code> provider with methods for:</p>
+  <h2>Support</h2>
   <ul>
-    <li>Requesting account access</li>
-    <li>Sending DOGE transactions</li>
-    <li>Getting and sending Doginals</li>
-    <li>Message signing</li>
-    <li>Event subscriptions</li>
+    <li><strong>Community:</strong> Join the Spook Society community</li>
+    <li><strong>Issues:</strong> Report bugs through official channels</li>
+    <li><strong>Updates:</strong> Follow for the latest features and security updates</li>
   </ul>
   
   <hr>
   
-  <h2>Support</h2>
-<ul>
-  <li>
-    <strong>Community:</strong>
-    <a href="https://spooksociety.xyz" target="_blank" rel="noopener">
-      Join the Spook Society community
-    </a>
-  </li>
-  <li><strong>Issues:</strong> Report bugs through official channels</li>
-  <li><strong>Updates:</strong> Follow for the latest features and security updates</li>
-</ul>
-
-<h3>Donations & Contact</h3>
-<p>
-  Spooky Doge is free to use, but donations are always appreciated ❤️
-</p>
-
-<p>
-  <strong>Dogecoin Address:</strong><br>
-  <code>D9nx7tcrjxbYV9VxGd6zsjrqqxSCSfAjJb</code>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <a href="mailto:doginalspooks@gmail.com">doginalspooks@gmail.com</a>
-</p>
-
-<div class="footer">
-  <p><strong>Built with care for the Spook Society</strong></p>
-  <p><em>Much wow. Very secure. So spooky.</em></p>
-</div>
-
+  <div class="footer">
+    <p><strong>Built with care by the Spook Society</strong></p>
+    <p><em>Much wow. Very secure. So spooky.</em></p>
+  </div>
 </body>
 </html>
