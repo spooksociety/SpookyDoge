@@ -394,7 +394,8 @@ window.<span class="syntax-function">addEventListener</span>(<span class="syntax
 <span class="syntax-keyword">const</span> accounts = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">getAccounts</span>();</code></pre>
 
   <h3>4. Send DOGE</h3>
-  <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">sendPayment</span>(recipientAddress, amountInDoge) {
+  <pre><code><span class="syntax-comment">// Simple single-output transaction</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">sendPayment</span>(recipientAddress, amountInDoge) {
   <span class="syntax-keyword">try</span> {
     <span class="syntax-comment">// Opens transaction approval popup</span>
     <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendTransaction</span>({
@@ -408,7 +409,28 @@ window.<span class="syntax-function">addEventListener</span>(<span class="syntax
     console.<span class="syntax-function">error</span>(<span class="syntax-string">'Transaction failed:'</span>, error.message);
     <span class="syntax-keyword">throw</span> error;
   }
-}</code></pre>
+}
+
+<span class="syntax-comment">// Advanced: Multi-output transaction (e.g., with marketplace fee)</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">sendPaymentWithFee</span>(recipientAddress, amount, marketplaceFeeAddress, feeAmount) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendTransaction</span>({
+      outputs: [
+        { address: recipientAddress, amount: amount },
+        { address: marketplaceFeeAddress, amount: feeAmount }
+      ]
+    });
+
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Transaction sent! TXID:'</span>, result.txid);
+    <span class="syntax-keyword">return</span> result.txid;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Transaction failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}
+
+<span class="syntax-comment">// Example: Send 100 DOGE to seller + 5 DOGE marketplace fee</span>
+<span class="syntax-keyword">await</span> <span class="syntax-function">sendPaymentWithFee</span>(<span class="syntax-string">'DSellerAddress...'</span>, <span class="syntax-number">100</span>, <span class="syntax-string">'DMarketplaceFeeAddress...'</span>, <span class="syntax-number">5</span>);</code></pre>
 
   <h3>5. Work with Doginals (Inscriptions)</h3>
   <pre><code><span class="syntax-comment">// Get all doginals in the wallet</span>
@@ -419,11 +441,11 @@ doginals.<span class="syntax-function">forEach</span>(d => {
   console.<span class="syntax-function">log</span>(<span class="syntax-string">'Content Type:'</span>, d.contentType);
 });
 
-<span class="syntax-comment">// Transfer a doginal</span>
+<span class="syntax-comment">// Transfer a single doginal</span>
 <span class="syntax-keyword">async function</span> <span class="syntax-function">transferDoginal</span>(inscriptionId, recipientAddress) {
   <span class="syntax-keyword">try</span> {
     <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendDoginal</span>({
-      inscriptionId: inscriptionId,
+      inscriptionId: inscriptionId,  <span class="syntax-comment">// Single inscription ID</span>
       to: recipientAddress
     });
     console.<span class="syntax-function">log</span>(<span class="syntax-string">'Doginal transferred! TXID:'</span>, result.txid);
@@ -432,7 +454,26 @@ doginals.<span class="syntax-function">forEach</span>(d => {
     console.<span class="syntax-function">error</span>(<span class="syntax-string">'Transfer failed:'</span>, error.message);
     <span class="syntax-keyword">throw</span> error;
   }
-}</code></pre>
+}
+
+<span class="syntax-comment">// Transfer MULTIPLE doginals in one transaction</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">transferMultipleDoginals</span>(inscriptionIds, recipientAddress) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendDoginal</span>({
+      inscriptionId: inscriptionIds,  <span class="syntax-comment">// Array of inscription IDs</span>
+      to: recipientAddress
+    });
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Doginals transferred! TXID:'</span>, result.txid);
+    <span class="syntax-keyword">return</span> result.txid;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Transfer failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}
+
+<span class="syntax-comment">// Example: Send 3 doginals at once</span>
+<span class="syntax-keyword">const</span> myDoginals = [<span class="syntax-string">'abc123i0'</span>, <span class="syntax-string">'def456i0'</span>, <span class="syntax-string">'ghi789i0'</span>];
+<span class="syntax-keyword">await</span> <span class="syntax-function">transferMultipleDoginals</span>(myDoginals, <span class="syntax-string">'DRecipientAddress...'</span>);</code></pre>
 
   <h3>6. Sign Messages</h3>
   <pre><code><span class="syntax-comment">// Request a message signature (no cost, requires user approval)</span>
@@ -530,21 +571,37 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
 }</code></pre>
 
   <h4><code>sendTransaction(params)</code></h4>
-  <p>Request a DOGE transaction. Opens approval popup.</p>
-  <p><strong>Parameters:</strong></p>
+  <p>Request a DOGE transaction. Opens approval popup. Supports both simple single-output and advanced multi-output formats.</p>
+  <p><strong>Parameters (Simple):</strong></p>
   <pre><code>{
   to: <span class="syntax-keyword">string</span>;      <span class="syntax-comment">// Recipient Dogecoin address</span>
   amount: <span class="syntax-keyword">number</span>;  <span class="syntax-comment">// Amount in DOGE (not koinu)</span>
 }</code></pre>
+  <p><strong>Parameters (Multi-Output):</strong></p>
+  <pre><code>{
+  outputs: Array&lt;{
+    address: <span class="syntax-keyword">string</span>;  <span class="syntax-comment">// Recipient Dogecoin address</span>
+    amount: <span class="syntax-keyword">number</span>;   <span class="syntax-comment">// Amount in DOGE</span>
+  }&gt;;
+}</code></pre>
+  <div class="tip">
+    <strong>Marketplace Tip:</strong> Use multi-output to include your marketplace fee in the same transaction. Each output is shown to the user for approval, ensuring full transparency.
+  </div>
+  <div class="tip">
+    <strong>Fee Structure:</strong> All transactions include a 0.01 DOGE wallet fee plus network fees (~0.02 DOGE). These are shown separately in the approval dialog so users see exactly where their funds go.
+  </div>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ txid: string }&gt;</code></p>
 
   <h4><code>sendDoginal(params)</code></h4>
-  <p>Request a doginal transfer. Opens approval popup.</p>
+  <p>Request a doginal transfer. Opens approval popup. Supports both single and multiple inscription transfers.</p>
   <p><strong>Parameters:</strong></p>
   <pre><code>{
-  inscriptionId: <span class="syntax-keyword">string</span>;  <span class="syntax-comment">// The inscription ID to transfer</span>
-  to: <span class="syntax-keyword">string</span>;             <span class="syntax-comment">// Recipient Dogecoin address</span>
+  inscriptionId: <span class="syntax-keyword">string</span> | <span class="syntax-keyword">string</span>[];  <span class="syntax-comment">// Single ID or array of inscription IDs</span>
+  to: <span class="syntax-keyword">string</span>;                        <span class="syntax-comment">// Recipient Dogecoin address</span>
 }</code></pre>
+  <div class="tip">
+    <strong>Multi-Send:</strong> Pass an array of inscription IDs to transfer multiple doginals in a single transaction. Fees scale per inscription: 0.02 DOGE network fee + 0.01 DOGE wallet fee = 0.03 DOGE per inscription. The approval dialog shows each fee component separately.
+  </div>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ txid: string }&gt;</code></p>
 
   <h4><code>signMessage(message)</code></h4>
