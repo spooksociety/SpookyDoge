@@ -489,7 +489,55 @@ doginals.<span class="syntax-function">forEach</span>(d => {
   }
 }</code></pre>
 
-  <h3>7. Listen for Events</h3>
+  <h3>7. Work with DRC-20 Tokens</h3>
+  <pre><code><span class="syntax-comment">// Get DRC-20 token balances</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">getDrc20Balances</span>() {
+  <span class="syntax-keyword">const</span> balances = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+    method: <span class="syntax-string">'doge_getDrc20Balances'</span>
+  });
+  <span class="syntax-comment">// Returns: [{ tick: 'DOGI', available: '1000', transferable: '500', total: '1500' }, ...]</span>
+  <span class="syntax-keyword">return</span> balances;
+}
+
+<span class="syntax-comment">// Send DRC-20 tokens</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">sendDrc20</span>(tick, amount, recipient) {
+  <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+    method: <span class="syntax-string">'doge_sendDrc20'</span>,
+    params: {
+      tick: tick,           <span class="syntax-comment">// Token ticker (e.g., 'DOGI')</span>
+      amount: amount,       <span class="syntax-comment">// Amount as string</span>
+      to: recipient         <span class="syntax-comment">// Recipient address</span>
+    }
+  });
+  <span class="syntax-keyword">return</span> result.txid;
+}</code></pre>
+  <p><strong>Fee:</strong> 0.03 DOGE per transfer (0.02 network + 0.01 wallet)</p>
+
+  <h3>8. Work with Dunes Tokens</h3>
+  <pre><code><span class="syntax-comment">// Get Dunes token balances</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">getDunesBalances</span>() {
+  <span class="syntax-keyword">const</span> balances = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+    method: <span class="syntax-string">'doge_getDunesBalances'</span>
+  });
+  <span class="syntax-comment">// Returns: [{ name: 'COOL•DUNE', symbol: 'COOLDUNE', balance: '5000', divisibility: 0 }, ...]</span>
+  <span class="syntax-keyword">return</span> balances;
+}
+
+<span class="syntax-comment">// Send Dunes tokens</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">sendDune</span>(duneName, amount, recipient) {
+  <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+    method: <span class="syntax-string">'doge_sendDune'</span>,
+    params: {
+      duneName: duneName,   <span class="syntax-comment">// Dune name (e.g., 'COOL•DUNE')</span>
+      amount: amount,       <span class="syntax-comment">// Amount as string</span>
+      to: recipient         <span class="syntax-comment">// Recipient address</span>
+    }
+  });
+  <span class="syntax-keyword">return</span> result.txid;
+}</code></pre>
+  <p><strong>Fee:</strong> Variable (0.02 DOGE for single-dune UTXO, 0.20 DOGE for multi-dune auto-split)</p>
+
+  <h3>9. Listen for Events</h3>
   <pre><code><span class="syntax-comment">// Account changes (user switches address)</span>
 window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'accountsChanged'</span>, (accounts) => {
   <span class="syntax-keyword">if</span> (accounts.length === <span class="syntax-number">0</span>) {
@@ -666,9 +714,13 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
       <tr><td><code>doge_requestAccounts</code></td><td>Request wallet connection</td></tr>
       <tr><td><code>doge_accounts</code></td><td>Get connected accounts</td></tr>
       <tr><td><code>doge_getBalance</code></td><td>Get wallet balance</td></tr>
-      <tr><td><code>doge_getDoginals</code></td><td>Get doginals in wallet</td></tr>
-      <tr><td><code>doge_sendTransaction</code></td><td>Send DOGE</td></tr>
-      <tr><td><code>doge_sendDoginal</code></td><td>Transfer a doginal</td></tr>
+      <tr><td><code>doge_getDoginals</code></td><td>Get doginals in wallet (supports pagination)</td></tr>
+      <tr><td><code>doge_sendTransaction</code></td><td>Send DOGE (single or multi-output)</td></tr>
+      <tr><td><code>doge_sendDoginal</code></td><td>Transfer doginals (single or batch)</td></tr>
+      <tr><td><code>doge_getDrc20Balances</code></td><td>Get DRC-20 token balances</td></tr>
+      <tr><td><code>doge_sendDrc20</code></td><td>Send DRC-20 tokens</td></tr>
+      <tr><td><code>doge_getDunesBalances</code></td><td>Get Dunes token balances</td></tr>
+      <tr><td><code>doge_sendDune</code></td><td>Send Dunes tokens</td></tr>
       <tr><td><code>doge_signMessage</code></td><td>Sign a message (free, no DOGE cost)</td></tr>
       <tr><td><code>doge_signPsbt</code></td><td>Sign a partially signed transaction (marketplace integration)</td></tr>
       <tr><td><code>doge_chainId</code></td><td>Get chain identifier (<code>"dogecoin:mainnet"</code>)</td></tr>
