@@ -537,7 +537,75 @@ doginals.<span class="syntax-function">forEach</span>(d => {
 }</code></pre>
   <p><strong>Fee:</strong> Variable (0.02 DOGE for single-dune UTXO, 0.20 DOGE for multi-dune auto-split)</p>
 
-  <h3>9. Listen for Events</h3>
+  <h3>8b. Send Dunes to Multiple Recipients</h3>
+  <pre><code><span class="syntax-comment">// Send Dunes to MULTIPLE recipients in one transaction (up to 50)</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">sendDuneToMany</span>(duneName, recipients) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">sendDuneMulti</span>({
+      duneName: duneName,
+      outputs: recipients  <span class="syntax-comment">// [{ address: 'D...', amount: '100' }, ...]</span>
+    });
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Multi-dune transfer sent! TXID:'</span>, result.txid);
+    <span class="syntax-keyword">return</span> result.txid;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Multi-dune transfer failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}
+
+<span class="syntax-comment">// Example: Distribute dune rewards to 3 stakers</span>
+<span class="syntax-keyword">await</span> <span class="syntax-function">sendDuneToMany</span>(<span class="syntax-string">'SPOOKY.DOGE'</span>, [
+  { address: <span class="syntax-string">'DStaker1Address...'</span>, amount: <span class="syntax-string">'500'</span> },
+  { address: <span class="syntax-string">'DStaker2Address...'</span>, amount: <span class="syntax-string">'250'</span> },
+  { address: <span class="syntax-string">'DStaker3Address...'</span>, amount: <span class="syntax-string">'1000'</span> },
+]);</code></pre>
+  <p><strong>Fee:</strong> Base 0.20 DOGE + scaling per input/output + 0.01 DOGE wallet fee. Max 50 recipients per transaction.</p>
+
+  <h3>9. Batch DRC-20 Airdrop (Up to 500 Recipients)</h3>
+  <p>Send a DRC-20 token to up to 500 recipients in one operation. Designed for airdrop tools and staking reward distribution. Each recipient can receive a different amount.</p>
+  <pre><code><span class="syntax-comment">// Batch send DRC-20 tokens to many recipients</span>
+<span class="syntax-keyword">async function</span> <span class="syntax-function">batchSendDrc20</span>(tick, recipients) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+      method: <span class="syntax-string">'doge_batchSendDrc20'</span>,
+      params: {
+        tick: tick,            <span class="syntax-comment">// DRC-20 token ticker (e.g., 'SLIME')</span>
+        recipients: recipients <span class="syntax-comment">// [{ address: 'D...', amount: '1000' }, ...]</span>
+      }
+    });
+
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Batch complete!'</span>);
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Distribution TXIDs:'</span>, result.distributionTxids);
+    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Completed:'</span>, result.completedRecipients, <span class="syntax-string">'/'</span>, result.totalRecipients);
+    <span class="syntax-keyword">return</span> result;
+  } <span class="syntax-keyword">catch</span> (error) {
+    <span class="syntax-keyword">if</span> (error.message === <span class="syntax-string">'User rejected'</span>) {
+      console.<span class="syntax-function">log</span>(<span class="syntax-string">'User declined the batch send'</span>);
+    } <span class="syntax-keyword">else</span> {
+      console.<span class="syntax-function">error</span>(<span class="syntax-string">'Batch failed:'</span>, error.message);
+    }
+    <span class="syntax-keyword">throw</span> error;
+  }
+}
+
+<span class="syntax-comment">// Example: Airdrop SLIME to 5 holders</span>
+<span class="syntax-keyword">await</span> <span class="syntax-function">batchSendDrc20</span>(<span class="syntax-string">'SLIME'</span>, [
+  { address: <span class="syntax-string">'DHolder1...'</span>, amount: <span class="syntax-string">'1000'</span> },
+  { address: <span class="syntax-string">'DHolder2...'</span>, amount: <span class="syntax-string">'500'</span> },
+  { address: <span class="syntax-string">'DHolder3...'</span>, amount: <span class="syntax-string">'2500'</span> },
+  { address: <span class="syntax-string">'DHolder4...'</span>, amount: <span class="syntax-string">'750'</span> },
+  { address: <span class="syntax-string">'DHolder5...'</span>, amount: <span class="syntax-string">'1200'</span> },
+]);</code></pre>
+  <div class="tip">
+    <strong>How it works:</strong> The wallet creates one transfer inscription per recipient (each encoding the correct amount), then sends them all to recipients in a distribution transaction. Inscriptions always land at the sender first &mdash; they only move to recipients when the distribution tx confirms. If anything fails mid-batch, undelivered inscriptions remain in your wallet as pending transfers for retry.
+  </div>
+  <div class="tip">
+    <strong>Performance tip:</strong> Wallets with multiple fee UTXOs (0.01+ DOGE each) can run parallel inscription chains for faster processing. With 5 UTXOs, ~50 inscriptions can be created without pausing for block confirmations.
+  </div>
+  <p><strong>Limits:</strong> Maximum 500 recipients per call. Distribution transactions auto-split if they exceed ~95KB.</p>
+  <p><strong>Fee:</strong> 0.02 DOGE per inscription tx (2 per recipient = 0.04/recipient) + distribution fee (0.02 base + 0.01 per recipient dust penalty) + 0.01 DOGE dev fee. Example: 50 recipients &asymp; 2.54 DOGE total.</p>
+
+  <h3>10. Listen for Events</h3>
   <pre><code><span class="syntax-comment">// Account changes (user switches address)</span>
 window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-string">'accountsChanged'</span>, (accounts) => {
   <span class="syntax-keyword">if</span> (accounts.length === <span class="syntax-number">0</span>) {
@@ -660,36 +728,238 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
 
   <h4><code>signPsbt(params)</code></h4>
   <p>Request signing of a partially signed transaction (PSBT). Opens approval popup. <span class="badge badge-purple">Marketplace Integration</span></p>
-  <p>This method enables marketplaces like InuBits to request partial transaction signing for trading Doginals, DRC-20 tokens, and Dunes. The wallet signs only the specified inputs, returning the signed hex to the marketplace for finalization and broadcast.</p>
+  <p>This method enables marketplaces to request partial transaction signing for trading Doginals, DRC-20 tokens, and Dunes. The wallet signs only the specified inputs, returning the signed hex to the marketplace for finalization and broadcast.</p>
+  <p><strong>Accepted formats:</strong> Both <strong>BIP174 PSBT format</strong> (industry standard, starts with magic bytes <code>70736274ff</code>) and <strong>raw transaction hex</strong> are supported. If BIP174 is provided, the wallet returns a signed BIP174 PSBT with partial signatures added. If raw hex is provided, the wallet returns a signed raw transaction hex.</p>
   <p><strong>Parameters:</strong></p>
   <pre><code>{
-  psbtHex: <span class="syntax-keyword">string</span>;        <span class="syntax-comment">// Raw transaction hex to sign</span>
+  psbtHex: <span class="syntax-keyword">string</span>;        <span class="syntax-comment">// BIP174 PSBT hex or raw transaction hex</span>
   signInputs?: <span class="syntax-keyword">number</span>[];  <span class="syntax-comment">// Input indices to sign (default: all)</span>
-  sighashTypes?: <span class="syntax-keyword">number</span>[]; <span class="syntax-comment">// Sighash types (default: [0x01] SIGHASH_ALL)</span>
-  message?: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// Optional message to display to user</span>
+  sighashTypes?: <span class="syntax-keyword">number</span>[]; <span class="syntax-comment">// Per-input sighash types (default: [0x01] SIGHASH_ALL)</span>
+  message?: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// Optional message to display to user (e.g. "Buy Doginal #1234 for 500 DOGE")</span>
+  imageUrl?: <span class="syntax-keyword">string</span>;      <span class="syntax-comment">// Optional image URL to display in approval popup (e.g. doginal thumbnail)</span>
 }</code></pre>
   <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ signedPsbtHex: string }&gt;</code></p>
+  <p><strong>Supported sighash types:</strong></p>
+  <table>
+    <thead>
+      <tr><th>Type</th><th>Value</th><th>Use Case</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>SIGHASH_ALL</code></td><td><code>0x01</code></td><td>Default — signs all inputs and outputs (buyer purchases)</td></tr>
+      <tr><td><code>SIGHASH_NONE</code></td><td><code>0x02</code></td><td>Signs inputs but no outputs</td></tr>
+      <tr><td><code>SIGHASH_SINGLE</code></td><td><code>0x03</code></td><td>Signs only the output at the same index as the input</td></tr>
+      <tr><td><code>SIGHASH_ALL|ANYONECANPAY</code></td><td><code>0x81</code></td><td>Signs one input and all outputs</td></tr>
+      <tr><td><code>SIGHASH_NONE|ANYONECANPAY</code></td><td><code>0x82</code></td><td>Signs one input, no outputs</td></tr>
+      <tr><td><code>SIGHASH_SINGLE|ANYONECANPAY</code></td><td><code>0x83</code></td><td>Marketplace listings — seller signs their input + matching output, buyer can add inputs/outputs later</td></tr>
+    </tbody>
+  </table>
+  <div class="tip">
+    <strong>Marketplace Tip:</strong> Sellers should use <code>SIGHASH_SINGLE|ANYONECANPAY</code> (<code>0x83</code>) when listing. This lets the buyer add their payment inputs and change outputs without invalidating the seller's signature. Buyers should use <code>SIGHASH_ALL</code> (<code>0x01</code>) to finalize the transaction.
+  </div>
+  <div class="tip">
+    <strong>Message Formatting:</strong> The wallet parses the <code>message</code> parameter to enhance the approval popup:
+    <ul>
+      <li><strong>DOGE amounts</strong> are extracted and displayed prominently (e.g., "500 DOGE" in large text). Include the amount followed by "DOGE" in your message.</li>
+      <li><strong>Action detection</strong> — if the message contains "buy" (case-insensitive), the popup title changes to "Confirm Purchase" and the button says "Buy". If <code>sighashTypes</code> includes <code>0x83</code>, the title shows "List for Sale" and the button says "List".</li>
+      <li><strong>Recommended format:</strong> <code>"List [Item Name] for [amount] DOGE"</code> or <code>"Buy [Item Name] for [amount] DOGE"</code></li>
+      <li><strong>Examples:</strong> <code>"List Spook #34 for 500 DOGE"</code>, <code>"Buy CoolDoge #12 for 100 DOGE"</code></li>
+      <li>For batch operations (<code>signPsbts</code>), the wallet sums up all DOGE amounts and shows a <strong>total</strong> at the bottom of the approval popup.</li>
+    </ul>
+  </div>
   <div class="warning">
     <strong>Security Note:</strong> Users must review and explicitly approve each PSBT signing request. The approval popup displays the origin, transaction data, and any message from the marketplace.
   </div>
 
-  <h3>Example: Marketplace Integration</h3>
-  <pre><code><span class="syntax-comment">// Example: Request PSBT signing for a marketplace trade</span>
-<span class="syntax-keyword">async function</span> <span class="syntax-function">signMarketplaceTrade</span>(psbtHex, inputsToSign) {
+  <h3>Example: Marketplace Listing (Seller)</h3>
+  <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">listDoginal</span>(psbtHex, inputsToSign, doginalInfo) {
   <span class="syntax-keyword">try</span> {
     <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">signPsbt</span>({
       psbtHex: psbtHex,
       signInputs: inputsToSign,
-      message: <span class="syntax-string">'Sign to complete your trade on MyMarketplace'</span>
+      message: <span class="syntax-string">`List ${doginalInfo.name} for ${doginalInfo.price} DOGE`</span>,
+      imageUrl: doginalInfo.thumbnailUrl
     });
     
-    console.<span class="syntax-function">log</span>(<span class="syntax-string">'Signed transaction:'</span>, result.signedPsbtHex);
+    <span class="syntax-comment">// Store the signed PSBT as an active listing on your marketplace</span>
     <span class="syntax-keyword">return</span> result.signedPsbtHex;
   } <span class="syntax-keyword">catch</span> (error) {
-    console.<span class="syntax-function">error</span>(<span class="syntax-string">'PSBT signing failed:'</span>, error.message);
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Listing failed:'</span>, error.message);
     <span class="syntax-keyword">throw</span> error;
   }
 }</code></pre>
+
+  <h3>Example: Marketplace Purchase (Buyer)</h3>
+  <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">buyDoginal</span>(psbtHex, buyerInputs, doginalInfo) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">signPsbt</span>({
+      psbtHex: psbtHex,
+      signInputs: buyerInputs,
+      message: <span class="syntax-string">`Buy ${doginalInfo.name} for ${doginalInfo.price} DOGE`</span>,
+      imageUrl: doginalInfo.thumbnailUrl
+    });
+    
+    <span class="syntax-comment">// PSBT is now fully signed (seller + buyer), finalize and broadcast</span>
+    <span class="syntax-keyword">return</span> result.signedPsbtHex;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Purchase failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}</code></pre>
+
+  <h4><code>signPsbts(params)</code> <span class="badge badge-purple">Batch Marketplace</span></h4>
+  <p>Request batch signing of multiple PSBTs at once. Opens a single approval popup showing all transactions. <strong>Used for batch marketplace operations.</strong></p>
+  <p>This method enables marketplaces to request signing of multiple transactions in a single user interaction. Ideal for listing multiple Doginals, DRC-20 tokens, or Dunes at once. Each PSBT is signed independently, so buyers can purchase individual listings separately.</p>
+  <p><strong>Parameters:</strong></p>
+  <pre><code>{
+  psbts: Array&lt;{
+    psbtHex: <span class="syntax-keyword">string</span>;        <span class="syntax-comment">// BIP174 PSBT hex or raw transaction hex</span>
+    signInputs?: <span class="syntax-keyword">number</span>[];  <span class="syntax-comment">// Input indices to sign (default: all)</span>
+    sighashTypes?: <span class="syntax-keyword">number</span>[]; <span class="syntax-comment">// Per-input sighash types (default: [0x01] SIGHASH_ALL)</span>
+    message?: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// Optional message for this transaction (e.g. "List Doginal #1234 for 500 DOGE")</span>
+    imageUrl?: <span class="syntax-keyword">string</span>;      <span class="syntax-comment">// Optional image URL for this transaction (e.g. doginal thumbnail)</span>
+  }&gt;
+}</code></pre>
+  <p class="returns"><strong>Returns:</strong> <code>Promise&lt;{ signedPsbts: Array&lt;{ signedPsbtHex: string }&gt; }&gt;</code></p>
+  <p>The returned <code>signedPsbts</code> array matches the order of the input <code>psbts</code> array.</p>
+  <div class="warning">
+    <strong>Security Note:</strong> Users see a single approval popup with a scrollable list of all transactions. They can review each item before approving or rejecting the entire batch.
+  </div>
+  <h5>Example: Batch Listing Multiple Doginals</h5>
+  <pre><code><span class="syntax-keyword">async function</span> <span class="syntax-function">batchListDoginals</span>(listings) {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">signPsbts</span>({
+      psbts: listings.<span class="syntax-function">map</span>(listing => ({
+        psbtHex: listing.psbtHex,
+        signInputs: listing.inputsToSign,
+        message: <span class="syntax-string">`List ${listing.name} for ${listing.price} DOGE`</span>,
+        imageUrl: listing.thumbnailUrl
+      }))
+    });
+    
+    <span class="syntax-comment">// Each signed PSBT is independent - store each as a separate listing</span>
+    result.signedPsbts.<span class="syntax-function">forEach</span>((signed, index) => {
+      console.<span class="syntax-function">log</span>(<span class="syntax-string">`Listed ${listings[index].name}:`</span>, signed.signedPsbtHex);
+    });
+    
+    <span class="syntax-keyword">return</span> result.signedPsbts;
+  } <span class="syntax-keyword">catch</span> (error) {
+    console.<span class="syntax-function">error</span>(<span class="syntax-string">'Batch listing failed:'</span>, error.message);
+    <span class="syntax-keyword">throw</span> error;
+  }
+}</code></pre>
+  <h5>Via <code>request()</code> Method</h5>
+  <pre><code><span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+  method: <span class="syntax-string">'doge_signPsbts'</span>,
+  params: {
+    psbts: [
+      { psbtHex: <span class="syntax-string">'...'</span>, message: <span class="syntax-string">'List Doginal #1 for 100 DOGE'</span>, imageUrl: <span class="syntax-string">'https://...'</span> },
+      { psbtHex: <span class="syntax-string">'...'</span>, message: <span class="syntax-string">'List Doginal #2 for 200 DOGE'</span>, imageUrl: <span class="syntax-string">'https://...'</span> }
+    ]
+  }
+});</code></pre>
+
+  <h4><code>batchSendDune(params)</code> <span class="badge badge-purple">Batch / Airdrop</span></h4>
+  <p>Batch send a Dunes token to up to 1000 recipients in one operation. The wallet automatically splits recipients into batches that fit within Dogecoin's 80-byte OP_RETURN relay limit (~10-12 per transaction depending on amounts). Opens a single approval popup showing all recipients, amounts, batch count, and fee breakdown. Designed for airdrop tools and staking reward distribution.</p>
+  <p><strong>Parameters:</strong></p>
+  <pre><code>{
+  duneName: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// Dune name (e.g., "MY.DUNE")</span>
+  duneId: <span class="syntax-keyword">string</span>;         <span class="syntax-comment">// Dune ID (e.g., "5000000:42")</span>
+  divisibility: <span class="syntax-keyword">number</span>;   <span class="syntax-comment">// Token divisibility (e.g., 8)</span>
+  recipients: Array&lt;{
+    address: <span class="syntax-keyword">string</span>;      <span class="syntax-comment">// Recipient Dogecoin address</span>
+    amount: <span class="syntax-keyword">string</span>;       <span class="syntax-comment">// Amount as string (e.g., "100")</span>
+  }&gt;;
+}</code></pre>
+  <p class="returns"><strong>Returns:</strong></p>
+  <pre><code>Promise&lt;{
+  txids: <span class="syntax-keyword">string</span>[];          <span class="syntax-comment">// Transaction IDs for each batch</span>
+  totalRecipients: <span class="syntax-keyword">number</span>;  <span class="syntax-comment">// Total recipients processed</span>
+}&gt;</code></pre>
+  <p><strong>Limits:</strong> Maximum 1000 recipients per call. Each batch contains ~10-12 recipients (calculated dynamically based on OP_RETURN payload size). The wallet chains change UTXOs between batches automatically.</p>
+  <h5>Fee Structure</h5>
+  <table>
+    <thead><tr><th>Fee Component</th><th>Amount</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Size-based network fee</td><td>~0.005 DOGE</td><td>Per batch, scales with actual tx size (0.01 DOGE/KB)</td></tr>
+      <tr><td>Dust penalty</td><td>0.01 DOGE</td><td>Per dust output (recipients + dune change)</td></tr>
+      <tr><td>Dev fee</td><td>0.01 DOGE</td><td>Per batch</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Example fee calculations (assuming 10 recipients per batch):</strong></p>
+  <ul>
+    <li>10 recipients (1 batch): ~0.125 DOGE</li>
+    <li>100 recipients (10 batches): ~1.25 DOGE</li>
+    <li>1000 recipients (100 batches): ~12.5 DOGE</li>
+  </ul>
+  <h5>Example</h5>
+  <pre><code><span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+  method: <span class="syntax-string">'doge_batchSendDune'</span>,
+  params: {
+    duneName: <span class="syntax-string">'MY.DUNE'</span>,
+    duneId: <span class="syntax-string">'5000000:42'</span>,
+    divisibility: 8,
+    recipients: [
+      { address: <span class="syntax-string">'DAddr1...'</span>, amount: <span class="syntax-string">'100'</span> },
+      { address: <span class="syntax-string">'DAddr2...'</span>, amount: <span class="syntax-string">'250'</span> },
+      { address: <span class="syntax-string">'DAddr3...'</span>, amount: <span class="syntax-string">'500'</span> },
+      <span class="syntax-comment">// ... up to 1000 recipients</span>
+    ]
+  }
+});
+console.<span class="syntax-function">log</span>(<span class="syntax-string">'Batch TXIDs:'</span>, result.txids);
+console.<span class="syntax-function">log</span>(<span class="syntax-string">'Total recipients:'</span>, result.totalRecipients);</code></pre>
+  <h5>How It Works</h5>
+  <ol>
+    <li><strong>Approval</strong> — User reviews recipient list, amounts, batch count, and fee breakdown</li>
+    <li><strong>Batch calculation</strong> — Wallet dynamically determines max recipients per batch based on OP_RETURN payload size (80-byte Dogecoin relay limit)</li>
+    <li><strong>Sequential batches</strong> — Each batch is a single multi-recipient dune transaction. Dune change (0.001 DOGE dust) from batch N feeds as dune input to batch N+1. DOGE change feeds as fee input.</li>
+    <li><strong>Mempool safety</strong> — Pauses at 20 unconfirmed ancestors (Dogecoin's 25-ancestor limit). Auto-retries on mempool chain errors with 60-second waits.</li>
+    <li><strong>Dune safety</strong> — All dune balances always sit on dedicated 0.001 DOGE dust outputs. Dune change never mixes with DOGE change.</li>
+  </ol>
+  <div class="info">
+    <strong>Note on batch size:</strong> The number of recipients per batch depends on the duneId and amounts being sent. Larger duneIds and amounts use more bytes in the Runestone encoding, resulting in fewer recipients per batch. Typical values are 10-12 per batch.
+  </div>
+
+  <h4><code>batchSendDrc20(params)</code> <span class="badge badge-purple">Batch / Airdrop</span></h4>
+  <p>Batch send a DRC-20 token to up to 500 recipients in one operation. Opens approval popup showing all recipients with amounts and fee breakdown. Designed for airdrop tools and staking reward distribution.</p>
+  <p><strong>Parameters:</strong></p>
+  <pre><code>{
+  tick: <span class="syntax-keyword">string</span>;    <span class="syntax-comment">// DRC-20 token ticker (e.g., "SLIME")</span>
+  recipients: Array&lt;{
+    address: <span class="syntax-keyword">string</span>;  <span class="syntax-comment">// Recipient Dogecoin address</span>
+    amount: <span class="syntax-keyword">string</span>;   <span class="syntax-comment">// Amount as string (e.g., "1000")</span>
+  }&gt;;
+}</code></pre>
+  <p class="returns"><strong>Returns:</strong></p>
+  <pre><code>Promise&lt;{
+  distributionTxids: <span class="syntax-keyword">string</span>[];   <span class="syntax-comment">// Distribution transaction IDs</span>
+  inscriptionTxids: <span class="syntax-keyword">string</span>[];    <span class="syntax-comment">// All commit+reveal transaction IDs</span>
+  completedRecipients: <span class="syntax-keyword">number</span>;   <span class="syntax-comment">// Recipients successfully processed</span>
+  totalRecipients: <span class="syntax-keyword">number</span>;       <span class="syntax-comment">// Total requested</span>
+}&gt;</code></pre>
+  <p><strong>Limits:</strong> Maximum 500 recipients per call. Distribution auto-splits at ~95KB.</p>
+  <div class="tip">
+    <strong>Fee structure:</strong>
+    <ul>
+      <li>Per inscription tx: 0.02 DOGE (2 txs per recipient = 0.04 DOGE/recipient)</li>
+      <li>Distribution base: 0.02 DOGE</li>
+      <li>Distribution dust penalty: +0.01 DOGE per recipient output (Dogecoin soft dust penalty for outputs below 0.01 DOGE)</li>
+      <li>Dev fee: 0.01 DOGE (once per batch)</li>
+    </ul>
+    <p>Example: 50 recipients &asymp; 2.54 DOGE total. 500 recipients &asymp; 25.04 DOGE total.</p>
+  </div>
+  <pre><code><span class="syntax-keyword">const</span> result = <span class="syntax-keyword">await</span> window.dogecoin.<span class="syntax-function">request</span>({
+  method: <span class="syntax-string">'doge_batchSendDrc20'</span>,
+  params: {
+    tick: <span class="syntax-string">'SLIME'</span>,
+    recipients: [
+      { address: <span class="syntax-string">'DAddr1...'</span>, amount: <span class="syntax-string">'1000'</span> },
+      { address: <span class="syntax-string">'DAddr2...'</span>, amount: <span class="syntax-string">'500'</span> },
+      { address: <span class="syntax-string">'DAddr3...'</span>, amount: <span class="syntax-string">'2500'</span> },
+    ]
+  }
+});
+console.<span class="syntax-function">log</span>(<span class="syntax-string">'Distribution TXIDs:'</span>, result.distributionTxids);</code></pre>
 
   <h4><code>request(args)</code></h4>
   <p>EIP-1193 style request method for compatibility.</p>
@@ -721,8 +991,12 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
       <tr><td><code>doge_sendDrc20</code></td><td>Send DRC-20 tokens</td></tr>
       <tr><td><code>doge_getDunesBalances</code></td><td>Get Dunes token balances</td></tr>
       <tr><td><code>doge_sendDune</code></td><td>Send Dunes tokens</td></tr>
+      <tr><td><code>doge_sendDuneMulti</code></td><td>Send Dunes tokens to multiple recipients in one tx</td></tr>
+      <tr><td><code>doge_batchSendDune</code></td><td>Batch send Dunes tokens to up to 1000 recipients (airdrop/rewards)</td></tr>
+      <tr><td><code>doge_batchSendDrc20</code></td><td>Batch send DRC-20 tokens to up to 500 recipients (airdrop/rewards)</td></tr>
       <tr><td><code>doge_signMessage</code></td><td>Sign a message (free, no DOGE cost)</td></tr>
       <tr><td><code>doge_signPsbt</code></td><td>Sign a partially signed transaction (marketplace integration)</td></tr>
+      <tr><td><code>doge_signPsbts</code></td><td>Batch sign multiple PSBTs at once (marketplace batch listing)</td></tr>
       <tr><td><code>doge_chainId</code></td><td>Get chain identifier (<code>"dogecoin:mainnet"</code>)</td></tr>
     </tbody>
   </table>
@@ -788,6 +1062,18 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
         <td>0.01 DOGE</td>
         <td>0.21 DOGE</td>
       </tr>
+      <tr>
+        <td>Batch Dune airdrop</td>
+        <td>~0.005 DOGE/batch + 0.01 DOGE per dust output</td>
+        <td>0.01 DOGE/batch</td>
+        <td>~0.125 DOGE (10 recipients), ~12.5 DOGE (1000 recipients)</td>
+      </tr>
+      <tr>
+        <td>Batch DRC-20 airdrop</td>
+        <td>0.02 DOGE x 2 per recipient + distribution fee (0.02 + 0.01/recipient dust penalty)</td>
+        <td>0.01 DOGE</td>
+        <td>~2.54 DOGE (50 recipients)</td>
+      </tr>
     </tbody>
   </table>
 
@@ -808,10 +1094,17 @@ window.dogecoin.<span class="syntax-function">on</span>(<span class="syntax-stri
       <tr><td><code>"Transaction rejected by user"</code></td><td>User declined transaction</td></tr>
       <tr><td><code>"Doginal transfer rejected by user"</code></td><td>User declined doginal transfer</td></tr>
       <tr><td><code>"Message signing rejected by user"</code></td><td>User declined signature request</td></tr>
+      <tr><td><code>"DRC-20 transfer rejected by user"</code></td><td>User declined DRC-20 transfer</td></tr>
+      <tr><td><code>"Dune transfer rejected by user"</code></td><td>User declined Dune transfer</td></tr>
       <tr><td><code>"PSBT signing rejected by user"</code></td><td>User declined PSBT signing request</td></tr>
+      <tr><td><code>"Batch PSBT signing rejected by user"</code></td><td>User declined batch PSBT signing request</td></tr>
       <tr><td><code>"Invalid PSBT params: psbtHex is required"</code></td><td>Missing psbtHex parameter</td></tr>
+      <tr><td><code>"Invalid batch PSBT params: psbts array is required"</code></td><td>Missing or empty psbts array parameter</td></tr>
       <tr><td><code>"Insufficient funds"</code></td><td>Not enough DOGE for transaction + fees</td></tr>
       <tr><td><code>"Inscription not found in wallet"</code></td><td>Requested inscription not in wallet</td></tr>
+      <tr><td><code>"Batch DRC-20 send rejected by user"</code></td><td>User declined batch DRC-20 airdrop</td></tr>
+      <tr><td><code>"Batch Dune send rejected by user"</code></td><td>User declined batch Dune airdrop</td></tr>
+      <tr><td><code>"Not enough DOGE for batch fees"</code></td><td>Insufficient DOGE to cover inscription + distribution fees</td></tr>
     </tbody>
   </table>
 
